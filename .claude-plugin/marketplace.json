@@ -1,0 +1,15 @@
+{
+  "name": "team-commonplace",
+  "description": "Team Commonplace: a shared commonplace book for small teams, as one Claude plugin with six skills.",
+  "owner": {
+    "name": "Tuana Irkey"
+  },
+  "plugins": [
+    {
+      "name": "team-commonplace",
+      "source": "./plugin",
+      "description": "Set up a team commonplace book, add to it, find what the team knows, close the week, and start or close a project.",
+      "version": "1.0.0"
+    }
+  ]
+}

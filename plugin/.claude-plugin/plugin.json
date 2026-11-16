@@ -1,0 +1,12 @@
+{
+  "name": "team-commonplace",
+  "version": "1.0.0",
+  "description": "A shared commonplace book for small teams, in a folder of Markdown files. Six skills: set up the book, add quotes, lessons and fixes with a source and a reason, find what the team already knows with entry numbers, close the week, and start or close a project with what the book holds.",
+  "author": {
+    "name": "Tuana Irkey",
+    "url": "https://tuirkey.gumroad.com"
+  },
+  "homepage": "https://github.com/tuirk/team-commonplace",
+  "license": "MIT",
+  "keywords": ["commonplace book", "team knowledge", "lessons learned", "small teams", "markdown"]
+}

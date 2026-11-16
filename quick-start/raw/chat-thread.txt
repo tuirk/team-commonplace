@@ -1,0 +1,13 @@
+Team chat export, 2026-10-27
+[2026-10-27 09:14] Priya: The florist says the preview link we sent last Monday shows an error page now.
+[2026-10-27 09:16] Tomas: Was it a share panel link? We moved to those so renaming a draft wouldn't break them.
+[2026-10-27 09:17] Priya: Yes, from the share panel. Nobody renamed anything this time.
+[2026-10-27 09:21] Tomas: Found it. Share panel links expire after seven days unless you turn that off in the panel settings.
+[2026-10-27 09:22] Ines: So that's why the opticians asked about a dead link in the summer.
+[2026-10-27 09:24] Tomas: Probably. I've turned the expiry off on every live project, and new projects start with it off.
+[2026-10-27 09:25] Priya: Can we say in the email when a preview link stops working, just in case?
+[2026-10-27 09:27] Callum: Good idea. Clients pass these links around their own team, so a week goes fast.
+[2026-10-27 09:30] Ines: Lesson for me: when we change how we send something, check what the new way does after a week, not just on day one.
+[2026-10-27 09:31] Tomas: I'll add the expiry setting to the launch checklist as well.
+[2026-10-27 09:33] Priya: Thanks. I've sent the florist a fresh link and said sorry for the trouble.
+[2026-10-27 09:34] Callum: Nice catch, both of you.

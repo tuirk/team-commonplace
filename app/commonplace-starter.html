@@ -1,0 +1,2716 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; form-action 'none'; base-uri 'none'">
+<link rel="icon" href="data:,">
+<title>Commonplace Starter</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --paper: #f5ecda;
+  --card: #fbf5e8;
+  --field: #fffaf1;
+  --wash: #efe0c3;
+  --ink: #3b2a1d;
+  --soft: #6b5443;
+  --line: #d6c3a3;
+  --edge: #9c8466;
+  --accent: #a64a20;
+  --accent-ink: #fffaf1;
+  --danger: #9a2d1a;
+  --warn: #f6d9bb;
+  --grain: rgba(112, 78, 38, 0.06);
+  --glow: rgba(255, 249, 236, 0.75);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #211913;
+    --card: #2c2219;
+    --field: #19130e;
+    --wash: #3a2c1f;
+    --ink: #f1e5d0;
+    --soft: #c8b598;
+    --line: #56442f;
+    --edge: #8c765c;
+    --accent: #e99a6b;
+    --accent-ink: #22170f;
+    --danger: #ff9f86;
+    --warn: #4b2f1b;
+    --grain: rgba(255, 232, 196, 0.04);
+    --glow: rgba(90, 62, 36, 0.35);
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { font-size: 106.25%; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 15% 0%, var(--glow), transparent 55%),
+    repeating-linear-gradient(0deg, var(--grain) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, var(--grain) 0 1px, transparent 1px 5px);
+  font-family: Verdana, Tahoma, "Segoe UI", sans-serif;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  word-spacing: 0.06em;
+  text-align: left;
+}
+h1, h2, h3 { line-height: 1.3; margin: 1.2rem 0 0.6rem; }
+h1 { font-size: 1.55rem; }
+h2 { font-size: 1.2rem; }
+h1:focus { outline-offset: 4px; }
+p, li, dd, .hint { max-width: 40rem; }
+strong { font-weight: 700; }
+a { color: var(--accent); text-underline-offset: 3px; }
+button, input, select, textarea { font: inherit; color: var(--ink); letter-spacing: inherit; }
+button {
+  min-height: 44px;
+  padding: 0.45rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  cursor: pointer;
+}
+button:hover { background: var(--wash); }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
+button.danger { color: var(--danger); border-color: var(--danger); }
+input, select, textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  background: var(--field);
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+}
+input[readonly] { background: transparent; border-style: dashed; }
+textarea { min-height: 9rem; resize: vertical; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+[aria-invalid="true"] { border: 2px solid var(--danger); }
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.7rem 1rem;
+  background: var(--wash);
+  border-bottom: 1px solid var(--line);
+}
+.banner p { margin: 0; flex: 1 1 16rem; }
+.warn { background: var(--warn); font-weight: 700; }
+.top, main { max-width: 52rem; margin: 0 auto; padding-left: 1rem; padding-right: 1rem; }
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid var(--line);
+}
+.brand { margin: 0; font-weight: 700; letter-spacing: 0.04em; }
+.brand span { color: var(--accent); }
+nav ul, .chips, .plain { list-style: none; margin: 0; padding: 0; }
+nav ul { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+nav button[aria-current="page"], [role="tab"][aria-selected="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+main { padding-bottom: 3rem; }
+.flash { margin: 0.8rem 0 0; font-weight: 700; color: var(--accent); }
+.flash:empty { display: none; }
+.notice {
+  padding: 0.8rem 1rem;
+  background: var(--card);
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+}
+.actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1rem 0; }
+.field { margin: 0 0 1.1rem; }
+.field > label, .legend { display: block; font-weight: 700; margin-bottom: 0.2rem; }
+.hint { margin: 0.25rem 0 0; color: var(--soft); font-size: 0.92rem; }
+.error { margin: 0.3rem 0 0; color: var(--danger); font-weight: 700; }
+.card { padding: 1rem; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.search { margin-top: 0.5rem; }
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.4rem 0.8rem;
+  margin: 0.8rem 0;
+}
+.filters .field { margin: 0; }
+.check { display: flex; align-items: center; gap: 0.6rem; min-height: 44px; }
+.check input { width: 1.4rem; height: 1.4rem; min-height: 0; margin: 0; accent-color: var(--accent); }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; }
+.count { font-weight: 700; margin: 0.4rem 0; }
+.results { list-style: none; margin: 0.5rem 0 0; padding: 0; display: grid; gap: 0.6rem; }
+.result {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--accent);
+  border-radius: 8px;
+}
+.result > span { display: block; overflow-wrap: anywhere; }
+.r-id { font-size: 0.85rem; color: var(--soft); letter-spacing: 0.05em; }
+.r-title { font-weight: 700; }
+.r-meta { font-size: 0.92rem; color: var(--soft); }
+.badge {
+  display: inline-block;
+  margin: 0.2rem 0.4rem 0 0;
+  padding: 0 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+.restricted { color: var(--danger); }
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.2rem 0 0.4rem; }
+.chips:empty { display: none; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding-left: 0.75rem;
+  background: var(--wash);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow-wrap: anywhere;
+}
+.chip button { min-height: 40px; min-width: 40px; padding: 0 0.6rem; background: transparent; border: 0; border-radius: 999px; }
+.prompt { margin: 0.6rem 0; }
+.prompt p { margin-top: 0; }
+details { margin: 0 0 1.1rem; }
+summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 700; }
+.entry-id { margin: 1rem 0 0; color: var(--soft); letter-spacing: 0.05em; }
+.entry-id .badge { margin-left: 0.5rem; }
+.content { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 40rem; }
+blockquote.content { margin: 1rem 0; padding: 0.6rem 1rem; background: var(--card); border-left: 5px solid var(--accent); }
+.why { padding: 0.8rem 1rem; background: var(--wash); border-radius: 8px; overflow-wrap: anywhere; }
+.fields { display: grid; grid-template-columns: max-content 1fr; gap: 0.3rem 1rem; margin: 1rem 0; }
+.fields dt { font-weight: 700; color: var(--soft); }
+.fields dd { margin: 0; overflow-wrap: anywhere; }
+.links li { margin: 0.3rem 0; }
+.links button { text-align: left; overflow-wrap: anywhere; }
+[role="tablist"] { display: flex; flex-wrap: wrap; gap: 0.4rem; padding-bottom: 0.6rem; border-bottom: 2px solid var(--line); }
+.index-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.8rem; padding: 0.4rem 0; border-bottom: 1px dotted var(--line); }
+.index-list .hint { margin: 0; overflow-wrap: anywhere; }
+.tag-list li { padding: 0.6rem 0; border-bottom: 1px dotted var(--line); }
+.tag-list .row input { flex: 1 1 14rem; width: auto; }
+.tag-name { display: block; font-weight: 700; }
+dialog {
+  max-width: min(30rem, calc(100vw - 2rem));
+  padding: 1.2rem;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+}
+dialog::backdrop { background: rgba(33, 22, 12, 0.55); }
+fieldset { margin: 0 0 1.1rem; padding: 0; border: 0; }
+legend { padding: 0; font-weight: 700; }
+.exports li { margin: 0 0 1rem; }
+.exports .hint { margin-top: 0.3rem; }
+#import-summary p { margin: 0.3rem 0; overflow-wrap: anywhere; }
+#print-panel { margin-top: 0.4rem; }
+#print-area { display: none; }
+@media print {
+  @page { margin: 10mm; }
+  body.printing { min-height: 0; background: #fff none; color: #000; }
+  body.printing > :not(#print-area) { display: none !important; }
+  body.printing #print-area {
+    display: block;
+    --ink: #000;
+    --soft: #444;
+    --line: #999;
+    --danger: #8a2a17;
+    color: #000;
+    background: #fff;
+    font-size: 10pt;
+    line-height: 1.35;
+    letter-spacing: 0;
+    word-spacing: 0;
+  }
+  #print-area h2 { margin: 0 0 2mm; font-size: 12pt; }
+  #print-area p, #print-area dd { max-width: none; margin: 0 0 2mm; }
+  .sheet {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    height: 240mm;
+    break-after: page;
+    page-break-after: always;
+  }
+  .sheet:last-child { break-after: auto; page-break-after: auto; }
+  .print-card { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; padding: 6mm; }
+  .print-card:nth-child(odd) { border-right: 1px dashed #777; }
+  .print-card:nth-child(-n+2) { border-bottom: 1px dashed #777; }
+  .print-card .pc-content { flex: 1 1 auto; min-height: 0; overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .pc-small { color: var(--soft); font-size: 9pt; overflow-wrap: anywhere; }
+  .print-item { padding: 3mm 0; border-bottom: 1px solid var(--line); break-inside: avoid; page-break-inside: avoid; }
+  .print-item .pc-content { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .print-item .fields { margin: 2mm 0 0; }
+}
+@media (max-width: 600px) {
+  h1 { font-size: 1.35rem; }
+  .fields { grid-template-columns: 1fr; gap: 0; }
+  .fields dd { margin-bottom: 0.5rem; }
+  .actions button { flex: 1 1 auto; }
+}
+</style>
+</head>
+<body>
+<noscript><p class="banner warn">Commonplace Starter needs JavaScript turned on in this browser.</p></noscript>
+<div id="storage-banner" class="banner warn" role="alert" hidden></div>
+<div id="sample-banner" class="banner" hidden>
+  <p>You’re exploring the sample team, <strong id="sample-team"></strong>. Anything you add here goes when you remove the sample.</p>
+  <button type="button" id="remove-sample">Remove the sample</button>
+</div>
+<div id="backup-banner" class="banner" role="status" hidden>
+  <p id="backup-text"></p>
+  <button type="button" id="backup-now">Download a backup</button>
+  <button type="button" id="backup-later">Not now</button>
+</div>
+<header class="top">
+  <p class="brand">Commonplace <span>Starter</span></p>
+  <nav id="nav" aria-label="Main" hidden>
+    <ul>
+      <li><button type="button" data-view="browse">Browse</button></li>
+      <li><button type="button" data-view="add">Add</button></li>
+      <li><button type="button" data-view="indexes">Indexes</button></li>
+      <li><button type="button" data-view="settings">Settings</button></li>
+      <li><button type="button" data-view="files">Import and export</button></li>
+      <li><button type="button" data-view="about">About</button></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <p id="flash" class="flash" role="status"></p>
+
+  <section id="view-first" class="view">
+    <h1 tabindex="-1">Start your commonplace book</h1>
+    <p>A commonplace book is where a team keeps what it learns: quotes, fixes, lessons and decisions, each with a line on why it matters. Start your own, or look around a sample team’s book first.</p>
+    <p class="notice">Everything you add stays in this browser on this device. Nothing is sent anywhere, and the app works without an internet connection.</p>
+    <div class="actions">
+      <button type="button" id="start-own" class="primary" aria-expanded="false" aria-controls="start-form">Start my own book</button>
+      <button type="button" id="explore-sample">Explore the sample team</button>
+    </div>
+    <form id="start-form" class="card" novalidate hidden>
+      <h2>Your book</h2>
+      <div class="field">
+        <label for="b-team">Team name</label>
+        <input id="b-team" autocomplete="off" aria-describedby="hint-b-team err-b-team">
+        <p id="hint-b-team" class="hint">Leave it blank for “Our team”.</p>
+        <p id="err-b-team" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="b-prefix">ID prefix</label>
+        <input id="b-prefix" autocomplete="off" maxlength="5" aria-describedby="hint-b-prefix err-b-prefix">
+        <p id="hint-b-prefix" class="hint">2 to 5 letters that start every ID, like CP-0001. Leave it blank for CP.</p>
+        <p id="err-b-prefix" class="error" hidden></p>
+      </div>
+      <button type="submit" class="primary">Create my book</button>
+    </form>
+  </section>
+
+  <section id="view-browse" class="view" hidden>
+    <h1 tabindex="-1">Browse entries</h1>
+    <div class="field search">
+      <label for="q">Search entries</label>
+      <input id="q" type="search" autocomplete="off" aria-describedby="hint-q">
+      <p id="hint-q" class="hint">Looks for every word in the title, content, source and why it matters.</p>
+    </div>
+    <div class="filters">
+      <div class="field"><label for="f-type">Type</label><select id="f-type" data-filter="type"></select></div>
+      <div class="field"><label for="f-tag">Tag</label><select id="f-tag" data-filter="tag"></select></div>
+      <div class="field"><label for="f-theme">Theme</label><select id="f-theme" data-filter="theme"></select></div>
+      <div class="field"><label for="f-status">Status</label><select id="f-status" data-filter="status"></select></div>
+      <div class="field"><label for="f-sens">Sensitivity</label><select id="f-sens" data-filter="sensitivity"></select></div>
+    </div>
+    <div class="row">
+      <label class="check"><input type="checkbox" id="f-retired"> Show retired entries</label>
+      <p id="source-chip" class="chip" hidden><span>Source: <span id="source-name"></span></span><button type="button" id="clear-source" aria-label="Remove the source filter">×</button></p>
+    </div>
+    <details id="print-panel">
+      <summary>Print these entries</summary>
+      <fieldset>
+        <legend>Layout</legend>
+        <label class="check"><input type="radio" name="print-layout" id="print-cards" value="cards" checked> Index cards, 4 to a page</label>
+        <label class="check"><input type="radio" name="print-layout" value="list"> Plain list</label>
+      </fieldset>
+      <label class="check"><input type="checkbox" id="print-restricted"> Include restricted entries</label>
+      <p id="print-count" class="hint" aria-live="polite"></p>
+      <div class="actions"><button type="button" id="print-now">Print</button></div>
+    </details>
+    <p id="count" class="count" aria-live="polite"></p>
+    <p id="browse-empty" class="hint" hidden></p>
+    <ul id="results" class="results"></ul>
+  </section>
+
+  <section id="view-entry" class="view" hidden>
+    <p class="entry-id"><span id="entry-id"></span><span id="entry-restricted" class="badge restricted" hidden>Restricted</span><span id="entry-retired" class="badge" hidden>Retired</span></p>
+    <h1 id="entry-title" tabindex="-1"></h1>
+    <div id="entry-content"></div>
+    <p class="why"><strong>Why it matters:</strong> <span id="entry-why"></span></p>
+    <dl id="entry-fields" class="fields"></dl>
+    <h2>Links</h2>
+    <ul id="entry-links" class="plain links"></ul>
+    <h2>Linked from</h2>
+    <ul id="linked-from" class="plain links"></ul>
+    <div class="actions">
+      <button type="button" id="edit-entry">Edit</button>
+      <button type="button" id="retire-entry">Retire</button>
+      <button type="button" id="delete-entry" class="danger">Delete for good</button>
+    </div>
+  </section>
+
+  <section id="view-add" class="view" hidden>
+    <h1 id="add-title" tabindex="-1">Add an entry</h1>
+    <form id="add-form" novalidate>
+      <div class="field"><label for="a-id">ID</label><input id="a-id" readonly></div>
+      <div class="field">
+        <label for="a-title">Title</label>
+        <input id="a-title" autocomplete="off" aria-describedby="hint-title err-title">
+        <p id="hint-title" class="hint">A short sentence, 3 to 10 words.</p>
+        <p id="err-title" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="a-type">Type</label>
+        <select id="a-type" aria-describedby="err-type"></select>
+        <p id="err-type" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="a-content">Content</label>
+        <textarea id="a-content" aria-describedby="hint-content err-content"></textarea>
+        <p id="hint-content" class="hint">What happened or what you learned. A quote stays word for word, in quotation marks.</p>
+        <p id="err-content" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="a-source">Source</label>
+        <input id="a-source" autocomplete="off" aria-describedby="hint-source err-source">
+        <p id="hint-source" class="hint">Where it came from, like “Kickoff call, client name, 2026-03-02”.</p>
+        <p id="err-source" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="a-why">Why it matters</label>
+        <input id="a-why" autocomplete="off" aria-describedby="hint-why err-why">
+        <p id="hint-why" class="hint">One line on why the team should remember this. Every entry needs one.</p>
+        <p id="err-why" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="a-tag">Tags</label>
+        <ul id="chips-tags" class="chips" aria-label="Chosen tags"></ul>
+        <input id="a-tag" list="dl-tags" autocomplete="off" aria-describedby="hint-tags err-tags">
+        <p id="hint-tags" class="hint">1 to 5 tags from your tag list. Press Enter or a comma after each one.</p>
+        <p id="err-tags" class="error" hidden></p>
+        <div id="tag-prompt" class="prompt card" hidden>
+          <p>“<strong id="tag-prompt-name"></strong>” isn’t on your tag list yet. Add to tag list?</p>
+          <div class="field">
+            <label for="tag-meaning">What the tag means</label>
+            <input id="tag-meaning" autocomplete="off" aria-describedby="err-meaning">
+            <p id="err-meaning" class="error" hidden></p>
+          </div>
+          <div class="actions">
+            <button type="button" id="tag-yes" class="primary">Yes, add it</button>
+            <button type="button" id="tag-no">No</button>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="a-theme">Themes</label>
+        <ul id="chips-themes" class="chips" aria-label="Chosen themes"></ul>
+        <input id="a-theme" list="dl-themes" autocomplete="off" aria-describedby="hint-themes err-themes">
+        <p id="hint-themes" class="hint">Optional. A longer thread that runs across entries, like new-hire-onboarding.</p>
+        <p id="err-themes" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="a-link">Links</label>
+        <ul id="chips-links" class="chips" aria-label="Linked entries"></ul>
+        <input id="a-link" list="dl-links" autocomplete="off" aria-describedby="hint-links err-links">
+        <p id="hint-links" class="hint">Optional. Pick related entries; each one links back here too.</p>
+        <p id="err-links" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="a-by">Added by</label>
+        <input id="a-by" autocomplete="off" aria-describedby="hint-by err-by">
+        <p id="hint-by" class="hint"></p>
+        <p id="err-by" class="error" hidden></p>
+      </div>
+      <div class="field"><label for="a-on">Added on</label><input id="a-on" readonly></div>
+      <div class="field"><label for="a-status">Status</label><select id="a-status"></select></div>
+      <div class="field">
+        <label for="a-sens">Sensitivity</label>
+        <select id="a-sens" aria-describedby="hint-sens"></select>
+        <p id="hint-sens" class="hint">Restricted entries carry a label everywhere they show.</p>
+      </div>
+      <details id="more-fields">
+        <summary>More fields</summary>
+        <div class="field">
+          <label for="a-promoted">Promoted to</label>
+          <input id="a-promoted" autocomplete="off" aria-describedby="hint-promoted">
+          <p id="hint-promoted" class="hint">The doc or page this entry became part of, if any.</p>
+        </div>
+        <div class="field">
+          <label for="a-reviewed">Last reviewed</label>
+          <input id="a-reviewed" autocomplete="off" placeholder="YYYY-MM-DD" aria-describedby="hint-reviewed">
+          <p id="hint-reviewed" class="hint">A date like 2026-11-30, if someone has checked it’s still true.</p>
+        </div>
+      </details>
+      <p id="form-error" class="error" role="alert"></p>
+      <div class="actions">
+        <button type="submit" id="save-entry" class="primary">Save entry</button>
+        <button type="button" id="cancel-edit" hidden>Cancel</button>
+      </div>
+    </form>
+    <datalist id="dl-tags"></datalist>
+    <datalist id="dl-themes"></datalist>
+    <datalist id="dl-links"></datalist>
+  </section>
+
+  <section id="view-indexes" class="view" hidden>
+    <h1 tabindex="-1">Indexes</h1>
+    <p class="hint">Every tag, theme and source in the book, with the entries that use it. Pick one to see those entries in Browse.</p>
+    <div role="tablist" aria-label="Indexes">
+      <button type="button" role="tab" id="tab-0" aria-controls="index-panel">Tags</button>
+      <button type="button" role="tab" id="tab-1" aria-controls="index-panel">Themes</button>
+      <button type="button" role="tab" id="tab-2" aria-controls="index-panel">Sources</button>
+    </div>
+    <div id="index-panel" role="tabpanel" aria-labelledby="tab-0">
+      <ul id="index-list" class="plain index-list"></ul>
+    </div>
+  </section>
+
+  <section id="view-settings" class="view" hidden>
+    <h1 tabindex="-1">Settings</h1>
+    <p class="notice">Everything you add stays in this browser on this device. Nothing is sent anywhere. Clearing this browser’s data for this page clears the book too.</p>
+    <form id="settings-form" novalidate>
+      <h2>Your book</h2>
+      <div class="field">
+        <label for="s-team">Team name</label>
+        <input id="s-team" autocomplete="off" aria-describedby="err-s-team">
+        <p id="err-s-team" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="s-prefix">ID prefix</label>
+        <input id="s-prefix" autocomplete="off" maxlength="5" aria-describedby="hint-s-prefix err-s-prefix">
+        <p id="hint-s-prefix" class="hint">2 to 5 capital letters. Entries you already have keep their IDs; the next one uses the new prefix.</p>
+        <p id="err-s-prefix" class="error" hidden></p>
+      </div>
+      <div class="field">
+        <label for="s-style">Added-by style</label>
+        <select id="s-style">
+          <option value="role">Role, like Project manager</option>
+          <option value="first-name">First name</option>
+        </select>
+      </div>
+      <div class="row">
+        <button type="submit" class="primary">Save settings</button>
+        <p id="settings-saved" role="status"></p>
+      </div>
+    </form>
+    <h2>Tag list</h2>
+    <p class="hint">Up to 40 tags, each with a one-line meaning so everyone uses it the same way. Removing a tag here leaves entries that use it as they are.</p>
+    <ul id="tag-list" class="plain tag-list"></ul>
+    <p id="err-tag-list" class="error" hidden></p>
+    <form id="new-tag-form" class="card" novalidate>
+      <div class="field"><label for="n-tag">New tag</label><input id="n-tag" autocomplete="off"></div>
+      <div class="field"><label for="n-meaning">What it means</label><input id="n-meaning" autocomplete="off"></div>
+      <p id="err-new-tag" class="error" hidden></p>
+      <button type="submit">Add tag</button>
+    </form>
+    <h2>Promote threshold</h2>
+    <p id="s-threshold"></p>
+  </section>
+
+  <section id="view-files" class="view" hidden>
+    <h1 tabindex="-1">Import and export</h1>
+    <h2>Export</h2>
+    <p id="deleted-top" class="notice" hidden></p>
+    <ul class="plain exports">
+      <li><button type="button" data-export="entries" aria-describedby="hint-x-entries">Download entries.md</button>
+        <p id="hint-x-entries" class="hint">Your entries in the Markdown the Claude skills read, for your book folder.</p></li>
+      <li><button type="button" data-export="settings" aria-describedby="hint-x-settings">Download settings.md</button>
+        <p id="hint-x-settings" class="hint">Your team name, ID prefix and tag list, to sit beside entries.md.</p></li>
+      <li><button type="button" data-export="backup" aria-describedby="hint-x-backup">Download a backup (JSON)</button>
+        <p id="hint-x-backup" class="hint">Everything in this book, ready to import here or in another browser.</p></li>
+      <li><button type="button" data-export="csv" aria-describedby="hint-x-csv">Download a spreadsheet (CSV)</button>
+        <p id="hint-x-csv" class="hint">One row per entry, for Google Sheets or Notion.</p></li>
+    </ul>
+    <p id="export-status" role="status"></p>
+    <h2>Import</h2>
+    <form id="import-form" novalidate>
+      <div class="field">
+        <label for="import-file">File to import</label>
+        <input id="import-file" type="file" accept=".md,.txt,.json,.csv" aria-describedby="hint-import-file">
+        <p id="hint-import-file" class="hint">An entries.md file, a settings.md file, a backup (JSON) or a spreadsheet (CSV).</p>
+      </div>
+      <fieldset>
+        <legend>How to import</legend>
+        <label class="check"><input type="radio" name="import-mode" value="merge" checked aria-describedby="hint-merge"> Merge into this book</label>
+        <p id="hint-merge" class="hint">Adds the entries this book doesn’t have and changes none of yours. An entry whose ID is taken gets the next free one.</p>
+        <label class="check"><input type="radio" name="import-mode" id="import-replace" value="replace" aria-describedby="hint-replace"> Replace this book</label>
+        <p id="hint-replace" class="hint">Swaps all the entries here for the ones in the file, after asking you first.</p>
+      </fieldset>
+      <button type="submit" class="primary">Import</button>
+    </form>
+    <div id="import-summary" role="status"></div>
+  </section>
+
+  <section id="view-about" class="view" hidden>
+    <h1 tabindex="-1">About</h1>
+    <h2>Commonplace Starter</h2>
+    <p><strong>by Tuana Irkey</strong></p>
+    <p>I made this small app so any team can keep a commonplace book with nothing more than a browser. The app itself never goes online: your book stays in this browser on this device.</p>
+    <p>If it’s useful, you’ll find my other work in my shop. The link opens in a new tab, and nothing loads until you choose it.</p>
+    <ul>
+      <li><a href="https://tuirkey.gumroad.com" target="_blank" rel="noopener noreferrer">My shop on Gumroad</a></li>
+    </ul>
+  </section>
+</main>
+
+<dialog id="delete-dialog" aria-labelledby="delete-text">
+  <p id="delete-text"></p>
+  <div class="actions">
+    <button type="button" id="delete-yes" class="danger">Delete</button>
+    <button type="button" id="delete-no" class="primary">Keep it</button>
+  </div>
+</dialog>
+
+<dialog id="replace-dialog" aria-labelledby="replace-text">
+  <p id="replace-text"></p>
+  <div class="actions">
+    <button type="button" id="replace-yes" class="danger">Replace</button>
+    <button type="button" id="replace-no" class="primary">Keep my book</button>
+  </div>
+</dialog>
+
+<div id="print-area"></div>
+
+<script id="format-library">/*
+ * Commonplace book format: read, write, index and check a book.
+ * Pure string code with no file access, so it runs in a browser page as well as in Node.
+ * Reading is tolerant (line endings, field order, spaces at line ends); writing is canonical.
+ */
+(function (root) {
+  'use strict';
+
+  // The format, in one place. entry-format.md and settings-template.md state the same rules.
+  var SEPARATOR = ' · ';
+  var LIST_SEPARATOR = ', ';
+  var WHY = '**Why it matters:** ';
+  var FIELDS = [
+    { label: 'Type', key: 'type', required: true },
+    { label: 'Source', key: 'source', required: true },
+    { label: 'Tags', key: 'tags', required: true, list: true },
+    { label: 'Themes', key: 'themes', list: true },
+    { label: 'Links', key: 'links', list: true },
+    { label: 'Added', key: 'added', required: true },
+    { label: 'Status', key: 'status', required: true },
+    { label: 'Promoted to', key: 'promoted_to' },
+    { label: 'Sensitivity', key: 'sensitivity', required: true },
+    { label: 'Last reviewed', key: 'last_reviewed' }
+  ];
+  var TYPES = ['quote', 'insight', 'fix', 'lesson', 'decision', 'idea', 'reference'];
+  var STATUSES = ['new', 'kept', 'promoted', 'retired'];
+  var SENSITIVITIES = ['internal', 'restricted'];
+  var MAX_TAGS = 5;
+  var ID_SHAPE = /^[A-Z]{2,5}-\d{4}$/;
+  var TAG_SHAPE = /^[\p{Ll}0-9]+(?:-[\p{Ll}0-9]+)*$/u;
+  var INDEX_NOTE = 'Generated from the entries. Do not edit by hand.';
+  var INDEXES = [
+    { file: 'index-tags.md', heading: '# Tag index', key: 'tags' },
+    { file: 'index-themes.md', heading: '# Theme index', key: 'themes' },
+    { file: 'sources.md', heading: '# Sources', key: 'source' }
+  ];
+  var SETTINGS_HEADING = '# Commonplace settings';
+  var TAGS_HEADING = '## Tags';
+  var WEEK_HEADING = '## Week';
+  var MAX_SETTINGS_TAGS = 40;
+  var DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  var SETTINGS_KEYS = [
+    { label: 'Team name', required: true, test: /\S/, hint: 'a name' },
+    { label: 'ID prefix', required: true, test: /^[A-Z]{2,5}$/, hint: '2 to 5 capital letters' },
+    { label: 'Curator', required: true, test: /\S/, hint: 'a role' },
+    { label: 'Added-by style', required: true, test: /^(role|first-name)$/, hint: 'role or first-name',
+      note: 'role | first-name' },
+    { label: 'Anonymise customers', required: true, test: /^(yes|no)$/, hint: 'yes or no',
+      note: 'yes = company kept, people\'s names removed' },
+    { label: 'Anonymise companies', test: /^(yes|no)$/, hint: 'yes or no' },
+    { label: 'Promote threshold', required: true, test: /^\d+ kept entries, or \d+ in \d+ days$/,
+      hint: '"<n> kept entries, or <m> in <d> days"' },
+    { label: 'Digest day', required: true, test: new RegExp('^(' + DAYS.join('|') + ')$'), hint: 'Monday to Sunday' },
+    { label: 'Backend', required: true, test: /^(markdown|notion)$/, hint: 'markdown or notion',
+      note: 'a folder of Markdown files' },
+    { label: 'Notion database', test: /^/, hint: 'any text' }
+  ];
+  var NOTE_COLUMN = 30; // a key's note (the template's comment) starts after this many characters
+  // The CSV columns, in schema order; list cells join with "; " (the brief's example row).
+  var CSV_COLUMNS = ['id', 'title', 'type', 'content', 'source', 'why_it_matters', 'tags', 'themes', 'links', 'added_by',
+    'added_on', 'status', 'promoted_to', 'sensitivity', 'last_reviewed'];
+  var CSV_LISTS = { tags: true, themes: true, links: true };
+  var CSV_LIST_SEPARATOR = '; ';
+
+  function byLowerLabel(list) {
+    var map = {};
+    list.forEach(function (d) { map[d.label.toLowerCase()] = d; });
+    return map;
+  }
+  var FIELD_BY_LABEL = byLowerLabel(FIELDS);
+  var KEY_BY_LABEL = byLowerLabel(SETTINGS_KEYS);
+
+  function trimEnd(s) { return s.replace(/\s+$/, ''); }
+  function quote(s) { return s === undefined ? 'end of file' : '"' + s + '"'; }
+  function problem(level, file, line, id, message) {
+    return { level: level, file: file, line: line, id: id || null, message: message };
+  }
+
+  function isDate(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+    if (!m) return false;
+    var y = +m[1], mo = +m[2], d = +m[3];
+    var leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+    var days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][mo - 1];
+    return mo >= 1 && mo <= 12 && d >= 1 && d <= days;
+  }
+  function isId(s) { return ID_SHAPE.test(s) && s.slice(-4) !== '0000'; }
+
+  // Strips a byte order mark and CR characters, reporting each once for the file.
+  function normalize(text, file, problems) {
+    var s = String(text);
+    if (s.charCodeAt(0) === 0xfeff) {
+      problems.push(problem('error', file, 1, null, 'byte order mark at the start of the file; save as UTF-8 without one'));
+      s = s.slice(1);
+    }
+    var cr = s.indexOf('\r');
+    if (cr >= 0) {
+      problems.push(problem('error', file, s.slice(0, cr).split('\n').length, null,
+        'Windows (CRLF) line endings; save with LF line endings'));
+      s = s.replace(/\r\n?/g, '\n');
+    }
+    return s.split('\n');
+  }
+
+  function blankEntry(file, line) {
+    return { id: '', title: '', type: '', content: '', source: '', why_it_matters: '', tags: [], themes: [],
+      links: [], added_by: '', added_on: '', status: '', promoted_to: '', sensitivity: '', last_reviewed: '',
+      file: file, line: line };
+  }
+
+  // Reads one entry block (heading to the line before the next heading). Returns the entry and its problems.
+  function parseBlock(lines, start, file) {
+    var e = blankEntry(file, start + 1);
+    var out = { entry: e, problems: [], idOk: false, at: {} };
+    var shown = null;
+    function err(i, msg) { out.problems.push(problem('error', file, start + i + 1, shown, msg)); }
+    var head = trimEnd(lines[0]);
+    var m = /^###\s+(\S+)\s+·\s*(.*)$/.exec(head);
+    if (!m) {
+      shown = (/^###\s*(\S*)/.exec(head)[1]) || null;
+      err(0, 'bad entry heading "' + head + '": expected "### <ID>' + SEPARATOR + '<Title>"');
+    } else {
+      e.id = shown = m[1];
+      e.title = m[2];
+      out.idOk = isId(e.id);
+      if (!out.idOk) err(0, 'bad ID "' + e.id + '"');
+      if (!e.title) err(0, 'missing field Title');
+    }
+    var i = 1, at = out.at;
+    for (; i < lines.length && /^- /.test(lines[i]); i++) {
+      var line = trimEnd(lines[i]);
+      var f = /^- ([^:]+):(.*)$/.exec(line);
+      var def = f && FIELD_BY_LABEL[f[1].trim().toLowerCase()];
+      if (!f) { err(i, 'bad field line "' + line + '"'); continue; }
+      if (!def) { err(i, 'unknown field ' + f[1].trim()); continue; }
+      if (at[def.key] !== undefined) { err(i, 'field ' + def.label + ' appears twice'); continue; }
+      at[def.key] = i;
+      var value = f[2].trim();
+      if (def.list) e[def.key] = value ? value.split(',').map(function (x) { return x.trim(); }) : [];
+      else if (def.key === 'added') {
+        var a = /^(\S+)\s+by\s+(.+)$/.exec(value);
+        if (a) { e.added_on = a[1]; e.added_by = a[2]; } else { e.added_on = value; }
+      } else e[def.key] = value;
+    }
+    FIELDS.forEach(function (d) {
+      var v = d.key === 'added' ? e.added_on : e[d.key];
+      if (d.required && (at[d.key] === undefined || (!d.list && !v))) err(at[d.key] || 0, 'missing field ' + d.label);
+    });
+    function oneOf(key, list, word) {
+      if (e[key] && list.indexOf(e[key]) < 0) err(at[key], 'unknown ' + word + ' "' + e[key] + '"');
+    }
+    oneOf('type', TYPES, 'type');
+    oneOf('status', STATUSES, 'status');
+    oneOf('sensitivity', SENSITIVITIES, 'sensitivity');
+    function checkList(key, word, ok) {
+      var seen = {};
+      e[key].forEach(function (x) {
+        if (!ok(x)) err(at[key], 'bad ' + word + ' "' + x + '"');
+        else if (seen[x]) err(at[key], 'repeated ' + word + ' "' + x + '"');
+        seen[x] = true;
+      });
+    }
+    var tagShape = function (x) { return TAG_SHAPE.test(x); };
+    if (at.tags !== undefined && !e.tags.length) err(at.tags, 'no tags');
+    if (e.tags.length > MAX_TAGS) err(at.tags, 'more than ' + MAX_TAGS + ' tags (' + e.tags.length + ')');
+    checkList('tags', 'tag', tagShape);
+    checkList('themes', 'theme', tagShape);
+    checkList('links', 'link ID', isId);
+    if (e.added_on && !e.added_by) err(at.added, 'bad Added line: expected "YYYY-MM-DD by <added by>"');
+    else if (e.added_on && !isDate(e.added_on)) err(at.added, 'bad date "' + e.added_on + '"');
+    if (/[^\s@]+@[^\s@]+\.[^\s@]+|\+?\d[\d\s().-]{6,}\d/.test(e.added_by)) {
+      err(at.added, 'added-by looks like an email or phone number');
+    }
+    if (e.last_reviewed && !isDate(e.last_reviewed)) err(at.last_reviewed, 'bad date "' + e.last_reviewed + '"');
+
+    var why = -1;
+    for (var k = i; k < lines.length; k++) if (/^\*\*Why it matters:\*\*/.test(lines[k])) { why = k; break; }
+    var end = why >= 0 ? why : lines.length;
+    var body = [];
+    for (k = i; k < end; k++) body.push({ text: trimEnd(lines[k]), at: k });
+    while (body.length && !body[0].text) body.shift();
+    while (body.length && !body[body.length - 1].text) body.pop();
+    if (!body.length) err(0, 'missing field content');
+    else if (e.type === 'quote') {
+      var plain = body.filter(function (b) { return b.text && b.text.charAt(0) !== '>'; })[0];
+      if (plain) err(plain.at, 'quote content not written as a block quote');
+      e.content = body.map(function (b) { return plain ? b.text : b.text.replace(/^> ?/, ''); }).join('\n');
+    } else {
+      e.content = body.map(function (b) { return b.text; }).join('\n').replace(/\n{3,}/g, '\n\n');
+    }
+    if (why < 0) err(0, 'missing field Why it matters');
+    else {
+      e.why_it_matters = trimEnd(lines[why]).replace(/^\*\*Why it matters:\*\*\s*/, '');
+      if (!e.why_it_matters) err(why, 'missing field Why it matters');
+      for (k = why + 1; k < lines.length; k++) {
+        if (lines[k].trim()) { err(k, 'text after the Why it matters line'); break; }
+      }
+    }
+    return out;
+  }
+
+  // Reads one entries file, keeping the line positions the shape check needs.
+  function parseFile(text, file) {
+    var problems = [];
+    var lines = normalize(text, file, problems);
+    var starts = [];
+    lines.forEach(function (l, i) { if (/^###(\s|$)/.test(l)) starts.push(i); });
+    var noteLines = lines.slice(0, starts.length ? starts[0] : lines.length).map(trimEnd);
+    while (noteLines.length && !noteLines[0]) noteLines.shift();
+    while (noteLines.length && !noteLines[noteLines.length - 1]) noteLines.pop();
+    var pf = { file: file, lines: lines, note: noteLines.join('\n'), entries: [], blocks: [], problems: problems };
+    starts.forEach(function (s, n) {
+      var b = parseBlock(lines.slice(s, n + 1 < starts.length ? starts[n + 1] : lines.length), s, file);
+      b.start = s;
+      b.bad = b.problems.length > 0;
+      pf.entries.push(b.entry);
+      pf.blocks.push(b);
+      Array.prototype.push.apply(problems, b.problems);
+    });
+    return pf;
+  }
+
+  function parseEntries(text, file) {
+    var pf = parseFile(text, file || 'entries.md');
+    return { note: pf.note, entries: pf.entries, problems: pf.problems };
+  }
+
+  function serializeEntry(e) {
+    var out = ['### ' + e.id + SEPARATOR + e.title];
+    FIELDS.forEach(function (d) {
+      var v = d.key === 'added' ? e.added_on + ' by ' + e.added_by
+        : d.list ? (e[d.key] || []).join(LIST_SEPARATOR) : e[d.key] || '';
+      if (d.required || v) out.push('- ' + d.label + ': ' + v);
+    });
+    out.push('');
+    String(e.content).split('\n').forEach(function (l) {
+      out.push(e.type !== 'quote' ? l : l ? '> ' + l : '>');
+    });
+    out.push('', WHY + e.why_it_matters);
+    return out.join('\n');
+  }
+
+  // Writes an entries file: the optional note, then the entries, one blank line apart, one final newline.
+  function serializeEntries(book) {
+    var entries = Array.isArray(book) ? book : book.entries || [];
+    var parts = !Array.isArray(book) && book.note ? [book.note] : [];
+    entries.forEach(function (e) { parts.push(serializeEntry(e)); });
+    return parts.length ? parts.join('\n\n') + '\n' : '';
+  }
+
+  function parseSettings(text, file) {
+    file = file || 'settings.md';
+    var problems = [], settings = {}, tags = [], seen = {}, section = 'keys', tagsSeen = false, week = null;
+    function add(level, i, msg) { problems.push(problem(level, file, i + 1, null, msg)); }
+    var lines = normalize(text, file, problems);
+    if (trimEnd(lines[0]) !== SETTINGS_HEADING) add('error', 0, 'settings must start with "' + SETTINGS_HEADING + '"');
+    for (var i = 1; i < lines.length; i++) {
+      var line = trimEnd(lines[i]);
+      if (!line) continue;
+      if (/^## /.test(line)) {
+        section = line === TAGS_HEADING ? 'tags' : line === WEEK_HEADING ? 'week' : 'other';
+        if (section === 'week') week = week || [];
+        tagsSeen = tagsSeen || section === 'tags';
+        continue;
+      }
+      var m = /^- ([^:]+):(.*)$/.exec(line);
+      if (section === 'keys') {
+        if (!m) { add('warning', i, 'not a "- Key: value" setting line'); continue; }
+        var def = KEY_BY_LABEL[m[1].trim().toLowerCase()];
+        var value = m[2].replace(/\s+#(\s.*)?$/, '').trim();
+        if (!def) add('warning', i, 'unknown settings key "' + m[1].trim() + '"');
+        else if (settings[def.label] !== undefined) add('error', i, 'setting ' + def.label + ' appears twice');
+        else {
+          settings[def.label] = value;
+          if (!def.test.test(value)) add('error', i, 'invalid ' + def.label + ' "' + value + '": expected ' + def.hint);
+        }
+      } else if (section === 'week') {
+        week.push(line);
+      } else if (section === 'tags') {
+        if (!m || !m[2].trim()) { add('error', i, 'invalid tag line "' + line + '": expected "- tag: meaning"'); continue; }
+        var tag = m[1].trim();
+        if (!TAG_SHAPE.test(tag)) add('error', i, 'bad tag "' + tag + '"');
+        else if (seen[tag]) add('error', i, 'duplicate tag "' + tag + '"');
+        seen[tag] = true;
+        tags.push({ tag: tag, meaning: m[2].trim(), line: i + 1 });
+        if (tags.length === MAX_SETTINGS_TAGS + 1) add('error', i, 'more than ' + MAX_SETTINGS_TAGS + ' tags');
+      }
+    }
+    SETTINGS_KEYS.forEach(function (d) {
+      if (d.required && settings[d.label] === undefined) add('error', 0, 'missing setting ' + d.label);
+    });
+    if (!tagsSeen) add('error', 0, 'missing "' + TAGS_HEADING + '" section');
+    return { settings: settings, tags: tags, week: week, problems: problems };
+  }
+
+  // Writes a settings file: the keys present in settings, in template order, each with its note as the template
+  // writes it, then the Week section's lines when week is a list, then the tag list. tags is a list of { tag, meaning }.
+  function serializeSettings(settings, tags, week) {
+    var out = [SETTINGS_HEADING];
+    SETTINGS_KEYS.forEach(function (d) {
+      if (settings[d.label] === undefined) return;
+      var line = '- ' + d.label + ': ' + settings[d.label];
+      if (d.note) line += ' '.repeat(Math.max(1, NOTE_COLUMN - line.length)) + '# ' + d.note;
+      out.push(line);
+    });
+    if (Array.isArray(week)) out.push.apply(out, ['', WEEK_HEADING].concat(week));
+    out.push('', TAGS_HEADING);
+    (tags || []).forEach(function (t) { out.push('- ' + t.tag + ': ' + t.meaning); });
+    return out.join('\n') + '\n';
+  }
+
+  function csvCell(value) {
+    var s = Array.isArray(value) ? value.join(CSV_LIST_SEPARATOR) : value === undefined || value === null ? '' : String(value);
+    return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  // Writes a CSV for spreadsheets: the schema header, then one row per entry. LF row ends, one final newline, no BOM.
+  function toCsv(entries) {
+    var rows = [CSV_COLUMNS.join(',')];
+    entries.forEach(function (e) {
+      rows.push(CSV_COLUMNS.map(function (k) { return csvCell(e[k]); }).join(','));
+    });
+    return rows.join('\n') + '\n';
+  }
+
+  // Reads a CSV tolerantly (a BOM, CRLF, quoted cells holding commas, quotes and newlines). Returns { entries, problems };
+  // the entry rules are left to checkBook.
+  function parseCsv(text, file) {
+    file = file || 'entries.csv';
+    var s = String(text), problems = [], entries = [], rows = [], cells = [], cell = '', quoted = false, line = 1, start = 1;
+    if (s.charCodeAt(0) === 0xfeff) s = s.slice(1);
+    for (var i = 0; i < s.length; i++) {
+      var c = s.charAt(i);
+      if (quoted) {
+        if (c === '"' && s.charAt(i + 1) === '"') { cell += '"'; i++; }
+        else if (c === '"') quoted = false;
+        else { cell += c; if (c === '\n') line++; }
+      } else if (c === '"' && !cell.trim()) { quoted = true; cell = ''; }
+      else if (c === ',') { cells.push(cell); cell = ''; }
+      else if (c === '\n') { cells.push(cell); rows.push({ cells: cells, line: start }); cells = []; cell = ''; start = ++line; }
+      else if (c !== '\r' || s.charAt(i + 1) !== '\n') cell += c;
+    }
+    if (quoted) problems.push(problem('error', file, start, null, 'a quoted cell in this row is never closed'));
+    else if (cell || cells.length) { cells.push(cell); rows.push({ cells: cells, line: start }); }
+    var header = rows.length ? rows[0].cells.map(function (x) { return x.trim(); }).join(',') : '';
+    if (header !== CSV_COLUMNS.join(',')) {
+      var want = 'the first row must be exactly "' + CSV_COLUMNS.join(',') + '"';
+      return { entries: [], problems: [problem('error', file, 1, null, want)] };
+    }
+    rows.slice(1).forEach(function (r) {
+      if (r.cells.every(function (x) { return !x.trim(); })) return;
+      if (r.cells.length !== CSV_COLUMNS.length) {
+        problems.push(problem('error', file, r.line, null, 'row has ' + r.cells.length + ' cells; expected ' + CSV_COLUMNS.length));
+        return;
+      }
+      var e = {};
+      CSV_COLUMNS.forEach(function (k, n) {
+        var v = r.cells[n];
+        if (CSV_LISTS[k]) e[k] = v.split(/[;,]/).map(function (x) { return x.trim(); }).filter(Boolean);
+        else if (k === 'content') {
+          e[k] = v.replace(/\r/g, '').split('\n').map(trimEnd).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+        } else e[k] = v.trim();
+      });
+      e.file = file;
+      e.line = r.line;
+      entries.push(e);
+    });
+    return { entries: entries, problems: problems };
+  }
+
+  // Builds the three index files from entries in book order. Returns { file name: text }.
+  function buildIndexes(entries) {
+    var result = {};
+    INDEXES.forEach(function (ix) {
+      var map = new Map();
+      entries.forEach(function (e) {
+        var keys = ix.key === 'source' ? [e.source] : e[ix.key] || [];
+        keys.forEach(function (k) {
+          if (!map.has(k)) map.set(k, []);
+          var ids = map.get(k);
+          if (ids[ids.length - 1] !== e.id) ids.push(e.id);
+        });
+      });
+      var names = Array.from(map.keys());
+      if (ix.key !== 'source') names.sort();
+      var text = ix.heading + '\n\n' + INDEX_NOTE + '\n';
+      if (names.length) {
+        text += '\n' + names.map(function (k) { return '- ' + k + ': ' + map.get(k).join(LIST_SEPARATOR); }).join('\n') + '\n';
+      }
+      result[ix.file] = text;
+    });
+    return result;
+  }
+
+  // Compares a file's lines with the canonical text, reporting the first difference in each entry.
+  function checkShape(pf, problems) {
+    var canon = [], from = [];
+    if (pf.note) canon = pf.note.split('\n').concat(['']);
+    pf.blocks.forEach(function (b) {
+      from.push(canon.length);
+      canon = canon.concat(serializeEntry(b.entry).split('\n'), ['']);
+    });
+    if (!pf.entries.length) canon = pf.note ? canon : [''];
+    var L = pf.lines;
+    function compare(aStart, aEnd, cStart, cEnd, id) {
+      for (var k = 0; k < Math.max(aEnd - aStart, cEnd - cStart); k++) {
+        var want = canon[cStart + k], got = L[aStart + k];
+        if (want === got) continue;
+        var msg = got === undefined && want === '' ? 'no newline at the end of the file'
+          : 'not in the exact format at line ' + (aStart + k + 1) + ': expected ' + quote(want) + ', found ' + quote(got);
+        problems.push(problem('error', pf.file, aStart + k + 1, id, msg));
+        return;
+      }
+    }
+    var firstStart = pf.blocks.length ? pf.blocks[0].start : L.length;
+    compare(0, firstStart, 0, pf.blocks.length ? from[0] : canon.length, null);
+    pf.blocks.forEach(function (b, n) {
+      if (b.bad) return;
+      var aEnd = n + 1 < pf.blocks.length ? pf.blocks[n + 1].start : L.length;
+      compare(b.start, aEnd, from[n], n + 1 < from.length ? from[n + 1] : canon.length, b.entry.id);
+    });
+  }
+
+  function compareIndex(file, want, text, problems) {
+    var got = normalize(text, file, problems), lines = want.split('\n');
+    for (var k = 0; k < Math.max(lines.length, got.length); k++) {
+      if (lines[k] !== got[k]) {
+        problems.push(problem('error', file, k + 1, null, file + ' is out of date at line ' + (k + 1) +
+          ': expected ' + quote(lines[k]) + ', found ' + quote(got[k])));
+        return;
+      }
+    }
+  }
+
+  /*
+   * Checks a book. files maps file names to text. In folder mode (the default) it checks layout, settings,
+   * every entries file and the indexes; with { single: true } it checks one entries file only.
+   * Returns { entries, problems, errors, warnings, entryErrors, indexes }.
+   */
+  function checkBook(files, options) {
+    var single = !!(options && options.single);
+    var names = Object.keys(files), problems = [], settings = null;
+    var entryFiles = single ? names.slice(0, 1)
+      : names.filter(function (n) { return /^entries-\d{4}\.md$/.test(n); }).sort()
+        .concat(files['entries.md'] !== undefined ? ['entries.md'] : []);
+    var order = ['settings.md'].concat(entryFiles, INDEXES.map(function (ix) { return ix.file; }), ['README.md']);
+    if (!single) {
+      order.forEach(function (n) {
+        if (files[n] === undefined && n !== 'entries.md') problems.push(problem('error', n, null, null, 'missing ' + n));
+      });
+      if (!entryFiles.length) problems.push(problem('error', 'entries.md', null, null, 'missing entries.md (or entries-YYYY.md)'));
+      if (files['settings.md'] !== undefined) {
+        settings = parseSettings(files['settings.md']);
+        problems = problems.concat(settings.problems);
+      }
+      if (files['README.md'] !== undefined) normalize(files['README.md'], 'README.md', problems);
+    }
+    var parsed = entryFiles.map(function (n) { return parseFile(files[n], n); });
+    var all = [];
+    parsed.forEach(function (pf) {
+      problems = problems.concat(pf.problems);
+      pf.blocks.forEach(function (b) { all.push(b); });
+    });
+    function add(b, level, line, msg) {
+      problems.push(problem(level, b.entry.file, line, b.entry.id, msg));
+      if (level === 'error') b.bad = true;
+    }
+    function lineOf(b, key) { return b.start + (b.at[key] || 0) + 1; }
+    var first = new Map(), prev = null;
+    var prefix = settings && settings.settings['ID prefix'];
+    var listed = settings && settings.tags.length ? settings.tags.map(function (t) { return t.tag; }) : null;
+    all.forEach(function (b) {
+      var e = b.entry, words = e.title.split(/\s+/).filter(Boolean).length;
+      if (e.title && (words < 3 || words > 10)) add(b, 'warning', e.line, 'title has ' + words + ' words; aim for 3 to 10');
+      if (listed) e.tags.forEach(function (t) {
+        if (TAG_SHAPE.test(t) && listed.indexOf(t) < 0) add(b, 'warning', lineOf(b, 'tags'), 'tag "' + t + '" is not in the settings tag list');
+      });
+      if (!b.idOk) return;
+      if (first.has(e.id)) {
+        var f = first.get(e.id).entry;
+        add(b, 'error', e.line, 'duplicate ID (first at ' + f.file + ':' + f.line + ')');
+        return;
+      }
+      first.set(e.id, b);
+      if (prefix && e.id.split('-')[0] !== prefix) {
+        add(b, 'warning', e.line, 'ID prefix "' + e.id.split('-')[0] + '" differs from the settings prefix "' + prefix + '"');
+      }
+      if (prev && +e.id.slice(-4) <= +prev.slice(-4)) add(b, 'warning', e.line, 'IDs not in ascending order (after ' + prev + ')');
+      prev = e.id;
+    });
+    all.forEach(function (b) {
+      b.entry.links.forEach(function (to, k, links) {
+        if (!isId(to) || links.indexOf(to) < k) return; // a repeated link is one error, so warn about it once
+        var target = first.get(to);
+        if (!target) add(b, 'warning', lineOf(b, 'links'), 'link to ' + to + ', which is not in the book');
+        else if (target.entry.links.indexOf(b.entry.id) < 0) {
+          add(b, 'warning', lineOf(b, 'links'), 'one-way link to ' + to + ' (' + to + ' does not link back)');
+        }
+      });
+    });
+    parsed.forEach(function (pf) { checkShape(pf, problems); });
+    var entryErrors = problems.filter(function (p) { return p.level === 'error' && entryFiles.indexOf(p.file) >= 0; }).length;
+    var indexes = buildIndexes(all.map(function (b) { return b.entry; }));
+    if (!single && !entryErrors) {
+      INDEXES.forEach(function (ix) {
+        if (files[ix.file] !== undefined) compareIndex(ix.file, indexes[ix.file], files[ix.file], problems);
+      });
+    }
+    var rank = function (p) { var r = order.indexOf(p.file); return r < 0 ? order.length : r; };
+    problems = problems.map(function (p, n) { return { p: p, n: n }; }).sort(function (a, b) {
+      return rank(a.p) - rank(b.p) || (a.p.line || 0) - (b.p.line || 0) || a.n - b.n;
+    }).map(function (x) { return x.p; });
+    var errors = problems.filter(function (p) { return p.level === 'error'; }).length;
+    return { entries: all.map(function (b) { return b.entry; }), problems: problems, errors: errors,
+      warnings: problems.length - errors, entryErrors: entryErrors, indexes: indexes };
+  }
+
+  var api = {
+    parseEntries: parseEntries,
+    serializeEntries: serializeEntries,
+    parseSettings: parseSettings,
+    serializeSettings: serializeSettings,
+    toCsv: toCsv,
+    parseCsv: parseCsv,
+    buildIndexes: buildIndexes,
+    checkBook: checkBook,
+    FORMAT: {
+      SEPARATOR: SEPARATOR, LIST_SEPARATOR: LIST_SEPARATOR, WHY: WHY, FIELDS: FIELDS, TYPES: TYPES,
+      STATUSES: STATUSES, SENSITIVITIES: SENSITIVITIES, MAX_TAGS: MAX_TAGS, ID_SHAPE: ID_SHAPE,
+      TAG_SHAPE: TAG_SHAPE, INDEX_NOTE: INDEX_NOTE, INDEXES: INDEXES, SETTINGS_HEADING: SETTINGS_HEADING,
+      TAGS_HEADING: TAGS_HEADING, MAX_SETTINGS_TAGS: MAX_SETTINGS_TAGS, SETTINGS_KEYS: SETTINGS_KEYS
+    }
+  };
+  api.FORMAT.CSV_COLUMNS = CSV_COLUMNS;
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.CommonplaceFormat = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+</script>
+<script type="text/plain" id="sample-settings"># Commonplace settings
+- Team name: Larchmont Studio
+- ID prefix: LS
+- Curator: Operations lead (rotates quarterly)
+- Added-by style: role        # role | first-name
+- Anonymise customers: yes    # yes = company kept, people's names removed
+- Promote threshold: 5 kept entries, or 3 in 30 days
+- Digest day: Monday
+- Backend: markdown           # a folder of Markdown files
+
+## Tags
+- client-onboarding: the first 30 days with a new client
+- scope: what is in and out of a project, and scope creep
+- pricing: what clients pay, objections, discounts
+- estimates: how we size work and how estimates land
+- handoff: passing a finished site or asset to the client
+- accessibility: making our work usable for everyone
+- performance: page speed and site performance
+- cms: content management systems and editing content
+- hosting: domains, hosting and launches
+- tooling: software, plugins and workarounds
+- hiring: finding, interviewing and welcoming new people
+- process: how we run projects day to day
+- design-feedback: giving, getting and acting on design feedback
+- retainer: ongoing support and retainer agreements
+- communication: how we talk with clients and with each other
+</script>
+<script type="text/plain" id="sample-entries">### LS-0001 · Lower the DNS time to live before moving hosts
+- Type: fix
+- Source: Launch notes, internal, 2025-09-16
+- Tags: hosting, performance
+- Links: LS-0019
+- Added: 2025-09-16 by Developer
+- Status: kept
+- Sensitivity: internal
+
+After we moved a client site to a new host, some visitors still saw the old cached pages for a full day. The old DNS records had a long time to live, so the change took a day to reach everyone. Lower the time to live a few days before the move, then raise it again once the new host is live.
+
+**Why it matters:** A short time to live makes a hosting move take minutes for visitors, not a day.
+
+### LS-0002 · One named contact makes the first month calmer
+- Type: insight
+- Source: Client survey, Larchmont Studio, 2026-01-12
+- Tags: client-onboarding, communication
+- Links: LS-0004
+- Added: 2026-01-12 by Operations lead
+- Status: kept
+- Sensitivity: internal
+
+In our yearly client survey, clients who had one named person answering every question rated their first month higher. Clients passed between two or three of us rated it lower, even when the work arrived on time.
+
+**Why it matters:** How the first month feels shapes how a client remembers the whole project.
+
+### LS-0003 · Clients read the first invoice as the real quote
+- Type: lesson
+- Source: Project retro, Halden Bakery site, 2026-02-14
+- Tags: pricing, estimates, communication
+- Links: LS-0011
+- Added: 2026-02-14 by Project manager
+- Status: kept
+- Sensitivity: internal
+
+The client accepted the estimate but pushed back hard on the first invoice. Our estimate showed ranges; the invoice showed one number, and that number is what they remembered.
+
+**Why it matters:** Show a single expected figure next to every range in estimates.
+
+### LS-0004 · Every new client gets one named contact
+- Type: decision
+- Source: Studio meeting, internal, 2026-02-16
+- Tags: client-onboarding, process
+- Links: LS-0002, LS-0010
+- Added: 2026-02-16 by Founder
+- Status: kept
+- Sensitivity: internal
+
+Every new client now gets one named contact at the studio and a kickoff call within three working days of signing. The contact stays the same for the first month, even when the work moves between people.
+
+**Why it matters:** It turns the survey finding into a rule the whole team follows.
+
+### LS-0005 · Tell us everything you need in week one
+- Type: quote
+- Source: Kickoff call, Marrowfen Flowers, 2026-02-17
+- Tags: client-onboarding, communication
+- Links: LS-0006
+- Added: 2026-02-17 by Project manager
+- Status: kept
+- Sensitivity: internal
+
+> "Can you send one list of everything you need from us in the first week? I keep finding out about things one email at a time."
+
+**Why it matters:** New clients want the whole picture of their homework up front, not piece by piece.
+
+### LS-0006 · Send the content checklist before the kickoff call
+- Type: lesson
+- Source: Studio meeting, internal, 2026-02-19
+- Tags: client-onboarding, scope
+- Links: LS-0005, LS-0022
+- Added: 2026-02-19 by Project manager
+- Status: kept
+- Sensitivity: internal
+
+We used to send the content checklist after the kickoff call, so clients heard about photos, copy and logins a week in. Sending it a few days before the call means they arrive with questions, and the call settles what is in scope.
+
+**Why it matters:** Clients who see the checklist early plan their own time and push back less on scope later.
+
+### LS-0007 · Bill hosting as its own monthly line
+- Type: decision
+- Source: Founders meeting, internal, 2026-02-20
+- Tags: hosting, retainer
+- Themes: q1-pricing-review
+- Links: LS-0013
+- Added: 2026-02-20 by Founder
+- Status: kept
+- Sensitivity: internal
+
+Hosting moves out of the support retainer and onto its own monthly line on every invoice. Clients can then see what keeps the site running and what pays for our time.
+
+**Why it matters:** Clients stop reading the retainer as the price of hosting and question it less.
+
+### LS-0008 · Rough wireframes early mean fewer layout changes later
+- Type: insight
+- Source: Unknown
+- Tags: scope, design-feedback
+- Added: 2026-02-23 by Designer
+- Status: kept
+- Sensitivity: internal
+
+Clients who see a rough wireframe in the first week ask for fewer layout changes once the designs are polished. A sketch invites the big comments early, while they are still cheap to act on.
+
+**Why it matters:** Moving big layout feedback to week one saves rework at the end of a project.
+
+### LS-0009 · Find out who controls DNS a week before launch
+- Type: lesson
+- Source: Launch retro, internal, 2026-02-25
+- Tags: hosting, process
+- Links: LS-0014
+- Added: 2026-02-25 by Developer
+- Status: promoted
+- Promoted to: promoted/launch-checklist.md
+- Sensitivity: internal
+
+A launch slipped by two days because nobody on the client side knew who controlled their domain's DNS. A week before launch, ask who holds the domain account and check they can make a change.
+
+**Why it matters:** A launch date means nothing until someone can change the DNS on the day.
+
+### LS-0010 · First-month feedback comes faster with one named contact
+- Type: insight
+- Source: Onboarding review, internal, 2026-02-27
+- Tags: client-onboarding, design-feedback
+- Links: LS-0004
+- Added: 2026-02-27 by Designer
+- Status: kept
+- Sensitivity: internal
+
+Looking back at this month's new projects, design feedback came back in about two days when the client knew exactly who would act on it. When feedback went to a shared inbox, it took more than a week.
+
+**Why it matters:** One named contact speeds up design rounds as well as making clients feel looked after.
+
+### LS-0011 · "Just tell me the number"
+- Type: quote
+- Source: Discovery call, Corrowin Dental, 2026-03-02
+- Tags: pricing, estimates
+- Links: LS-0003
+- Added: 2026-03-02 by Founder
+- Status: kept
+- Sensitivity: internal
+
+> "I don't need three options. Just tell me the number you'd pick."
+
+**Why it matters:** Second client this quarter asking for one recommended price, not a menu.
+
+### LS-0012 · Image size limits in the old CMS
+- Type: reference
+- Source: Image size guide, old CMS help pages, 2026-03-16
+- Tags: cms, performance
+- Themes: cms-migration
+- Links: LS-0019
+- Added: 2026-03-16 by Developer
+- Status: retired
+- Sensitivity: internal
+- Last reviewed: 2026-06-29
+
+The old CMS rejected images over 2 MB and shrank anything wider than 2000 pixels, so we exported large images at 1920 pixels wide. These limits stopped applying once every site moved to the new CMS.
+
+**Why it matters:** It kept image uploads working on sites still waiting for the CMS move.
+
+### LS-0013 · Agree retainer rate changes in writing at signing
+- Type: lesson
+- Source: Founders meeting, internal, 2026-03-25
+- Tags: pricing, retainer
+- Themes: q1-pricing-review
+- Links: LS-0007
+- Added: 2026-03-25 by Founder
+- Status: kept
+- Sensitivity: restricted
+
+A retainer client disputed our mid-year price rise and kept paying the old rate for three months while we talked it through. The contract said rates could change, but not when or by how much. Write the review date and the largest possible rise into every retainer at signing.
+
+**Why it matters:** A clear rule at signing avoids a pricing dispute that costs months of goodwill.
+
+### LS-0014 · The hosting provider's checks before a launch
+- Type: reference
+- Source: Hosting provider's launch guide, 2026-04-07
+- Tags: hosting, tooling
+- Links: LS-0009
+- Added: 2026-04-07 by Developer
+- Status: promoted
+- Promoted to: promoted/launch-checklist.md
+- Sensitivity: internal
+
+Our hosting provider's launch guide lists three things to finish before a site goes live: install the security certificate, set redirects for old addresses and take a full backup. Each takes minutes, but any of them can hold up a launch if it is left to the day.
+
+**Why it matters:** Every launch gets the same short list of checks, whoever runs it.
+
+### LS-0015 · Day rate agreed with the freelance developer
+- Type: decision
+- Source: Founders meeting, internal, 2026-04-10
+- Tags: hiring, process
+- Added: 2026-04-10 by Founder
+- Status: kept
+- Sensitivity: restricted
+
+We agreed a day rate of 380 with the freelance developer helping on the CMS move, fixed until the move is finished. Keep the rate out of estimates and client conversations; clients are billed at our usual rate.
+
+**Why it matters:** Anyone pricing the CMS move needs the real cost of the extra developer.
+
+### LS-0016 · Light grey text looks smart but is hard to read
+- Type: quote
+- Source: Design review, Tolvery Opticians, 2026-04-14
+- Tags: design-feedback, accessibility
+- Added: 2026-04-14 by Designer
+- Status: kept
+- Sensitivity: internal
+
+> "The light grey text looks smart, but many of our customers can't read it."
+
+**Why it matters:** Clients notice low contrast as an accessibility problem before we do.
+
+### LS-0017 · Preview links break when the CMS draft is renamed
+- Type: fix
+- Source: Support thread, internal, 2026-04-21
+- Tags: cms, tooling
+- Added: 2026-04-21 by Developer
+- Status: new
+- Sensitivity: internal
+
+Renaming a draft changes its slug, which kills any preview link already sent to the client. Lock the slug before sharing a preview, or send the preview through the share panel, which uses the page ID.
+
+**Why it matters:** [draft] Saves a confusing client email every time a draft is renamed.
+
+### LS-0018 · Customers struggle to read the light grey text
+- Type: quote
+- Source: Design review, Tolvery Opticians, 2026-04-14
+- Tags: design-feedback, accessibility
+- Added: 2026-05-04 by Project manager
+- Status: new
+- Sensitivity: internal
+
+> "The light grey text looks smart, but most of our customers can't read it."
+
+**Why it matters:** Check text contrast before the first design review instead of waiting for the client to spot it.
+
+### LS-0019 · Set redirects before switching DNS after a CMS move
+- Type: fix
+- Source: Support thread, internal, 2026-06-15
+- Tags: hosting, cms
+- Themes: cms-migration
+- Links: LS-0001, LS-0012
+- Added: 2026-06-15 by Developer
+- Status: kept
+- Sensitivity: internal
+
+After a CMS move, old page addresses showed errors for an hour because the redirects went in after the DNS switch. Load the redirect list onto the new host first, test a few old addresses, then switch the DNS.
+
+**Why it matters:** Old links in emails and search results keep working from the first minute.
+
+### LS-0020 · A starter folder of templates for each new hire
+- Type: idea
+- Source: Studio meeting, internal, 2026-07-20
+- Tags: hiring, tooling
+- Themes: new-hire-onboarding
+- Links: LS-0023
+- Added: 2026-07-20 by Operations lead
+- Status: kept
+- Sensitivity: internal
+
+Every new hire could get a starter folder on day one, with our estimate, proposal and handoff templates, the content checklist and a short glossary. Logins and passwords stay out of it; the operations lead sets those up in person.
+
+**Why it matters:** [draft] New people could find the studio's templates without asking around.
+
+### LS-0021 · Client wants a colleague copied on final files
+- Type: quote
+- Source: Launch call, Marrowfen Flowers, 2026-09-14
+- Tags: design-feedback, communication
+- Added: 2026-09-14 by Project manager
+- Status: new
+- Sensitivity: internal
+
+> "Could you copy Gemma on the final files? She looks after all our photos now."
+
+**Why it matters:** The person who looks after a client's photos needs the final files as much as the owner does.
+
+### LS-0022 · Estimate the client's content work on its own line
+- Type: lesson
+- Source: Project retro, Corrowin Dental site, 2026-09-30
+- Tags: estimate, scope
+- Links: LS-0006
+- Added: 2026-09-30 by Project manager
+- Status: new
+- Sensitivity: internal
+
+The dental practice's new site went live three weeks late, and most of the wait was for their copy and photos. Our estimate had folded their content work into ours. Next time, estimate the client's content work on its own line, with its own dates.
+
+**Why it matters:** Clients see that the content is their work too, and the timeline stays honest.
+
+### LS-0023 · New designers shadow one client handoff early
+- Type: idea
+- Source: Studio meeting, internal, 2026-10-01
+- Tags: hiring, handoff
+- Themes: new-hire-onboarding
+- Links: LS-0020, LS-0024
+- Added: 2026-10-01 by Designer
+- Status: new
+- Sensitivity: internal
+
+New designers could shadow one client handoff in their first two weeks. Seeing what a client gets at the end makes our file and naming rules make sense.
+
+**Why it matters:** [draft] New designers would learn why the handoff rules exist, not just what they are.
+
+### LS-0024 · The handoff checklist helped the new designer most
+- Type: insight
+- Source: Onboarding check-in, internal, 2026-10-02
+- Tags: handoff, process
+- Themes: new-hire-onboarding
+- Links: LS-0023
+- Added: 2026-10-02 by Operations lead
+- Status: new
+- Sensitivity: internal
+
+At her first check-in, our newest designer said the handoff checklist was the most useful thing she read in week one. It showed her how a project ends before she had seen one start.
+
+**Why it matters:** The handoff checklist doubles as an introduction to how we work.
+
+### LS-0025 · Collection only for this year's Christmas orders
+- Type: decision
+- Source: Week close, Halden Bakery orders, 2026-10-12
+- Tags: scope
+- Themes: halden-bakery-orders
+- Links: LS-0032
+- Added: 2026-10-12 by Project manager
+- Status: new
+- Sensitivity: internal
+
+The bakery wanted home delivery as well as collection from the shop. With four weeks until the first orders, we agreed on collection only, put delivery on next year's list and wrote that on the first card of the project.
+
+**Why it matters:** Saying what was out on the first day kept a four-week project to four weeks.
+
+### LS-0026 · Ask whose name goes on the box
+- Type: quote
+- Source: Week close, Halden Bakery orders, 2026-10-12
+- Tags: design-feedback, communication
+- Themes: halden-bakery-orders
+- Added: 2026-10-12 by Project manager
+- Status: new
+- Sensitivity: internal
+
+> "Half our orders are presents, so ask whose name goes on the box as well as who is paying."
+
+**Why it matters:** Gift orders need two names, and our first order form asked for only one.
+
+### LS-0027 · Hold a collection slot while the customer pays
+- Type: fix
+- Source: Week close, Halden Bakery orders, 2026-10-19
+- Tags: tooling
+- Themes: halden-bakery-orders
+- Links: LS-0028
+- Added: 2026-10-19 by Project manager
+- Status: new
+- Sensitivity: internal
+
+In testing, two people took the last collection slot at the same moment and it was overbooked. The page now holds a slot for ten minutes while someone pays, and frees it again if they leave without finishing.
+
+**Why it matters:** An overbooked slot means a queue at the counter on the busiest mornings of the year.
+
+### LS-0028 · Ask what the kitchen can bake each day first
+- Type: lesson
+- Source: Week close, Halden Bakery orders, 2026-10-19
+- Tags: scope, process
+- Themes: halden-bakery-orders
+- Links: LS-0027
+- Added: 2026-10-19 by Project manager
+- Status: new
+- Sensitivity: internal
+
+We built the page with no daily limit, then learned the ovens manage about sixty orders a day. Adding the limit late meant reworking every slot. Next time, ask what the kitchen can bake each day before designing anything.
+
+**Why it matters:** A shop's physical limits shape an order page more than its wish list does.
+
+### LS-0029 · Shop staff found what our own testing missed
+- Type: insight
+- Source: Week close, Halden Bakery orders, 2026-10-26
+- Tags: process, design-feedback
+- Themes: halden-bakery-orders
+- Links: LS-0030, LS-0031
+- Added: 2026-10-26 by Project manager
+- Status: new
+- Sensitivity: internal
+
+Two shop staff placed test orders on the counter tablet during a quiet hour. In twenty minutes they found three problems we had missed, including a button hidden behind the tablet's keyboard.
+
+**Why it matters:** The people who use a page all day test it better than we do.
+
+### LS-0030 · A printed slip for every order box
+- Type: idea
+- Source: Week close, Halden Bakery orders, 2026-10-26
+- Tags: handoff, tooling
+- Themes: halden-bakery-orders
+- Links: LS-0029
+- Added: 2026-10-26 by Project manager
+- Status: new
+- Sensitivity: internal
+
+Staff asked for a slip for each order to tape to its box, with the name and collection time in large print. A print button on the order list could make these slips for the next shop we build for.
+
+**Why it matters:** Staff at a busy counter read paper faster than a screen.
+
+### LS-0031 · Open orders quietly for a day before announcing
+- Type: lesson
+- Source: Week close, Halden Bakery orders, 2026-11-02
+- Tags: process, communication
+- Themes: halden-bakery-orders
+- Links: LS-0029
+- Added: 2026-11-02 by Project manager
+- Status: new
+- Sensitivity: internal
+
+The bakery announced the page the moment it went live, and the first hour brought forty orders and two small bugs at once. Next time, open it to regular customers for a day, fix what they find, then tell everyone.
+
+**Why it matters:** [draft] A quiet first day finds the last bugs while little is at stake.
+
+### LS-0032 · The owner's plans for a second shop
+- Type: insight
+- Source: Week close, Halden Bakery orders, 2026-11-02
+- Tags: scope
+- Themes: halden-bakery-orders
+- Links: LS-0025
+- Added: 2026-11-02 by Project manager
+- Status: new
+- Sensitivity: restricted
+
+The owner told us in confidence that the bakery hopes to open a second shop next spring and will want delivery then. Keep this out of anything shared outside the studio.
+
+**Why it matters:** It explains why delivery waits until next year, and it may be our next project.
+</script>
+<script type="text/plain" id="starter-tags"># Starter tags by team type
+
+Setup proposes 12 to 20 starter tags from the set that fits the team, each with its one-line meaning, so a new book starts with a shared vocabulary. Pick the closest set, mix in tags drawn from any material the user attached, and let the user edit the list before writing it into settings. Copy the lines as they are: they are already in the settings format.
+
+## General team
+
+- onboarding: first 30 days of a client or hire
+- customers: what customers say, want and complain about
+- pricing: what customers pay, objections, discounts
+- process: how we run recurring work
+- tooling: software and workarounds
+- meetings: how we run meetings and what comes out of them
+- communication: how we write updates and explain things
+- planning: goals, priorities and plans
+- hiring: finding, interviewing and welcoming people
+- retros: what we learn when we look back on work
+- quality: mistakes caught, checks and standards
+- suppliers: vendors, partners and contracts
+- costs: spending, budgets and savings
+- handoff: passing work between people or teams
+
+## Agency (design, web, marketing)
+
+- client-onboarding: the first 30 days with a new client
+- scope: what is in and out of a project, and scope creep
+- pricing: what clients pay, objections, discounts
+- estimates: how we size work and how estimates land
+- handoff: passing a finished site or asset to the client
+- accessibility: making our work usable for everyone
+- performance: page speed and site performance
+- cms: content management systems and editing content
+- hosting: domains, hosting and launches
+- tooling: software, plugins and workarounds
+- hiring: finding, interviewing and welcoming new people
+- process: how we run projects day to day
+- design-feedback: giving, getting and acting on design feedback
+- retainer: ongoing support and retainer agreements
+- communication: how we talk with clients and with each other
+
+## Operations
+
+- onboarding: first 30 days of a new hire or site
+- suppliers: vendors, orders and contracts
+- inventory: stock levels, counts and shortages
+- scheduling: rotas, shifts and bookings
+- logistics: deliveries, shipping and returns
+- safety: hazards, near misses and safe ways of working
+- quality: defects, checks and standards
+- compliance: rules we must follow and audits
+- costs: spending, budgets and savings
+- incidents: what went wrong and how we recovered
+- maintenance: equipment, repairs and upkeep
+- process: how we run recurring work
+- tooling: software and workarounds
+- handoff: passing work between shifts or teams
+
+## Customer support and service desk
+
+- onboarding: a customer's first weeks with us
+- billing: invoices, payments and refunds
+- bugs: faults customers report and how we confirm them
+- how-to: questions about using the product or service
+- escalation: when and how a case goes to another team
+- response-time: how fast we answer and what slows us down
+- tone: wording that calms or upsets customers
+- saved-replies: reply templates and when they work
+- known-issues: problems we know about and their workarounds
+- feature-requests: what customers ask us to add
+- churn: why customers leave or nearly leave
+- self-service: help articles and answers customers find alone
+- tooling: software and workarounds
+- handoff: passing a case between people or shifts
+
+## Product and research
+
+- user-research: interviews, surveys and what users told us
+- usability: where people get stuck using the product
+- onboarding: a new user's first sessions
+- feature-requests: what users ask for and why
+- pricing: what users pay, objections, discounts
+- competitors: what other products do and how users compare us
+- experiments: tests we ran and what they showed
+- metrics: numbers we track and what moved them
+- roadmap: what we plan to build and why
+- positioning: how we describe the product and to whom
+- retention: why users stay or leave
+- accessibility: making the product usable for everyone
+- performance: speed and reliability
+- bugs: faults found and how we fixed them
+- launches: releasing features and what we learned
+
+## Consultancy
+
+- client-onboarding: the first 30 days with a new client
+- discovery: early calls and research before a proposal
+- proposals: how we write and win proposals
+- scope: what is in and out of an engagement, and scope creep
+- pricing: what clients pay, objections, discounts
+- estimates: how we size work and how estimates land
+- workshops: running sessions with clients
+- deliverables: reports, decks and other outputs
+- stakeholders: who decides, who influences and how to reach them
+- change-requests: changes asked for mid-engagement
+- retainer: ongoing support and retainer agreements
+- methods: frameworks and ways of working we reuse
+- handoff: passing work to the client's team
+- hiring: finding, interviewing and welcoming new people
+- communication: how we talk with clients and with each other
+</script>
+<script>
+(function () {
+  'use strict';
+  var F = window.CommonplaceFormat;
+  var FMT = F.FORMAT;
+  var KEY = 'commonplace.v1';
+  var KEYS = FMT.CSV_COLUMNS;
+  var DEFAULTS = { 'Team name': 'Our team', 'ID prefix': 'CP', 'Curator': 'Team lead', 'Added-by style': 'role',
+    'Anonymise customers': 'yes', 'Promote threshold': '5 kept entries, or 3 in 30 days', 'Digest day': 'Monday',
+    'Backend': 'markdown' };
+  var VIEWS = ['first', 'browse', 'entry', 'add', 'indexes', 'settings', 'files', 'about'];
+  var REMIND = 20;
+  var NAME_CUT = 'Settings files read “ #” as the start of a note, so this name would be cut short. Take out the # or the space before it.';
+  var LIST_INPUT = { tags: 'a-tag', themes: 'a-theme', links: 'a-link' };
+  var FILTER_KEY = ['tag', 'theme', 'source'];
+  var storage = { ok: true, locked: false };
+  var state = null;
+  var view = 'first';
+  var current = null;
+  var draft = null;
+  var pendingTag = '';
+  var pendingFlash = '';
+  var pendingImport = null;
+  var indexTab = 0;
+  var filters = blankFilters();
+
+  // Small helpers. Every entry, setting and sample string goes into the page as text, never as markup.
+  function $(id) { return document.getElementById(id); }
+  function el(tag, props, kids) {
+    var n = document.createElement(tag);
+    Object.keys(props || {}).forEach(function (k) {
+      if (k === 'text') n.textContent = props[k];
+      else if (k === 'class') n.className = props[k];
+      else if (/-/.test(k)) n.setAttribute(k, props[k]);
+      else n[k] = props[k];
+    });
+    (kids || []).forEach(function (c) { if (c) n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function clear(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; }
+  function num(id) { return +String(id).slice(-4) || 0; }
+  function two(n) { return n < 10 ? '0' + n : String(n); }
+  function today() { var d = new Date(); return d.getFullYear() + '-' + two(d.getMonth() + 1) + '-' + two(d.getDate()); }
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function find(id) { return state.entries.filter(function (e) { return e.id === id; })[0]; }
+  function listed(tag) { return state.tags.some(function (t) { return t.tag === tag; }); }
+  function blankFilters() {
+    return { q: '', type: '', tag: '', theme: '', status: '', sensitivity: '', source: '', retired: false };
+  }
+  function pick(e) {
+    var o = {};
+    KEYS.forEach(function (k) { o[k] = Array.isArray(e[k]) ? e[k].slice() : e[k] || ''; });
+    return o;
+  }
+  function used(key) {
+    var seen = {};
+    state.entries.forEach(function (e) { e[key].forEach(function (v) { seen[v] = true; }); });
+    return Object.keys(seen).sort();
+  }
+  function topNumber(entries) { return entries.reduce(function (m, e) { return Math.max(m, num(e.id)); }, 0); }
+  function nextId() { return state.settings['ID prefix'] + '-' + String(state.highest + 1).padStart(4, '0'); }
+  function say(id, text) { var n = $(id); n.textContent = text; n.hidden = !text; }
+
+  // Storage: one key, read in a try so a browser that blocks storage still runs the app in memory. The book is read
+  // before the probe write, so a browser that is full still shows it.
+  function openStorage() {
+    var raw = null;
+    try {
+      var ls = window.localStorage;
+      raw = ls.getItem(KEY);
+      ls.setItem(KEY + '.probe', '1');
+      ls.removeItem(KEY + '.probe');
+    } catch (err) {
+      storage.ok = false;
+    }
+    return raw;
+  }
+  function load(raw) {
+    if (raw === null || raw === undefined) return null;
+    try {
+      var s = JSON.parse(raw);
+      if (s && s.version === 1 && s.settings && Array.isArray(s.entries)) {
+        s.tags = Array.isArray(s.tags) ? s.tags : [];
+        s.highest = Math.max(+s.highest || 0, topNumber(s.entries));
+        s.last_added_by = s.last_added_by || '';
+        s.since_export = +s.since_export || 0;
+        s.remind_after = +s.remind_after || REMIND;
+        return s;
+      }
+    } catch (err) { /* reported below */ }
+    storage.locked = true;
+    return null;
+  }
+  function save() {
+    if (!storage.ok || storage.locked) return;
+    try {
+      if (state) window.localStorage.setItem(KEY, JSON.stringify(state));
+      else window.localStorage.removeItem(KEY);
+    } catch (err) {
+      storage.ok = false;
+      storage.stopped = true;
+      storageBanner();
+    }
+  }
+  // Imports write the whole new book in their own try, so a full browser keeps the old book and keeps saving.
+  function commit(next) {
+    if (storage.ok && !storage.locked) {
+      try { window.localStorage.setItem(KEY, JSON.stringify(next)); } catch (err) { return false; }
+    }
+    state = next;
+    return true;
+  }
+  function storageBanner() {
+    var b = $('storage-banner');
+    b.textContent = storage.locked
+      ? 'The book saved in this browser couldn’t be read, so it’s been left untouched. Anything you do now stays in this tab and won’t be saved.'
+      : storage.stopped
+        ? 'This browser stopped saving, maybe because it’s full. Your book is kept up to the last change before this message, and anything after it stays in this tab only. Download a backup from Import and export.'
+        : 'This browser isn’t letting the app keep anything, so it can’t save your book. You can still look around and add entries, but they’ll be gone when you close this tab.';
+    b.hidden = false;
+  }
+
+  // Books: a new own book takes the setup defaults and the general starter tags; the sample comes from its files.
+  function starterTags() {
+    var part = $('starter-tags').textContent.split(/^## /m).filter(function (s) { return s.indexOf('General team\n') === 0; })[0] || '';
+    var text = FMT.SETTINGS_HEADING + '\n\n' + FMT.TAGS_HEADING + '\n' + part.slice(part.indexOf('\n'));
+    return F.parseSettings(text).tags.map(function (t) { return { tag: t.tag, meaning: t.meaning }; });
+  }
+  function newBook(team, prefix) {
+    var settings = Object.assign({}, DEFAULTS, { 'Team name': team || DEFAULTS['Team name'], 'ID prefix': prefix || 'CP' });
+    return { version: 1, sample: false, settings: settings, tags: starterTags(), entries: [], highest: 0, last_added_by: '',
+      since_export: 0, remind_after: REMIND };
+  }
+  function tagPairs(tags) { return tags.map(function (t) { return { tag: t.tag, meaning: t.meaning }; }); }
+  function sampleBook() {
+    var st = F.parseSettings($('sample-settings').textContent);
+    var entries = F.parseEntries($('sample-entries').textContent).entries.map(pick);
+    return { version: 1, sample: true, settings: st.settings, entries: entries, highest: topNumber(entries), last_added_by: '',
+      tags: tagPairs(st.tags), since_export: 0, remind_after: REMIND };
+  }
+  // The settings file this book exports (with its Week section, if any), or '' when it wouldn't read back the same way.
+  function settingsText(settings, tags, week) {
+    var text = F.serializeSettings(settings, tags, week), back = F.parseSettings(text);
+    var same = Object.keys(settings).length === Object.keys(back.settings).length && Object.keys(settings).every(function (k) {
+      return back.settings[k] === settings[k];
+    }) && JSON.stringify(tagPairs(back.tags)) === JSON.stringify(tagPairs(tags))
+      && JSON.stringify(back.week) === JSON.stringify(week || null);
+    return same && !back.problems.some(function (p) { return p.level === 'error'; }) ? text : '';
+  }
+  function nameCut(team) {
+    return F.parseSettings(F.serializeSettings({ 'Team name': team }, [])).settings['Team name'] !== team;
+  }
+
+  // Views
+  function show(name, focus) {
+    if (!state) name = 'first';
+    if (name === 'entry' && !find(current)) name = 'browse';
+    view = name;
+    VIEWS.forEach(function (v) { $('view-' + v).hidden = v !== name; });
+    $('nav').hidden = !state;
+    var navName = name === 'entry' ? 'browse' : name;
+    Array.prototype.forEach.call(document.querySelectorAll('#nav button'), function (b) {
+      if (b.getAttribute('data-view') === navName) b.setAttribute('aria-current', 'page');
+      else b.removeAttribute('aria-current');
+    });
+    $('sample-banner').hidden = !(state && state.sample);
+    if (state && state.sample) $('sample-team').textContent = state.settings['Team name'] || 'the sample team';
+    backupBanner();
+    $('flash').textContent = pendingFlash;
+    pendingFlash = '';
+    RENDER[name]();
+    if (focus) {
+      window.scrollTo(0, 0);
+      $('view-' + name).querySelector('h1').focus();
+    }
+  }
+  var RENDER = {
+    first: renderFirst, browse: renderBrowse, entry: renderEntry, add: renderAdd,
+    indexes: renderIndexes, settings: renderSettings, files: renderFiles, about: function () {}
+  };
+
+  // First run
+  function renderFirst() {
+    $('start-form').hidden = true;
+    $('start-own').setAttribute('aria-expanded', 'false');
+  }
+  function startOwn() {
+    $('start-form').hidden = false;
+    $('start-own').setAttribute('aria-expanded', 'true');
+    $('b-team').focus();
+  }
+  function createBook(ev) {
+    ev.preventDefault();
+    var prefix = $('b-prefix').value.trim().toUpperCase();
+    if (prefix && !/^[A-Z]{2,5}$/.test(prefix)) {
+      say('err-b-prefix', 'Use 2 to 5 letters, like CP or OPS.');
+      $('b-prefix').setAttribute('aria-invalid', 'true');
+      $('b-prefix').focus();
+      return;
+    }
+    $('b-prefix').removeAttribute('aria-invalid');
+    say('err-b-prefix', '');
+    var team = $('b-team').value.trim();
+    if (team && nameCut(team)) {
+      say('err-b-team', NAME_CUT);
+      $('b-team').setAttribute('aria-invalid', 'true');
+      return $('b-team').focus();
+    }
+    $('b-team').removeAttribute('aria-invalid');
+    say('err-b-team', '');
+    state = newBook(team, prefix);
+    save();
+    draft = null;
+    filters = blankFilters();
+    pendingFlash = 'Your book is ready. Add your first entry whenever you like.';
+    show('browse', true);
+  }
+  function exploreSample() {
+    state = sampleBook();
+    save();
+    draft = null;
+    filters = blankFilters();
+    show('browse', true);
+  }
+  function removeSample() {
+    state = null;
+    draft = null;
+    save();
+    show('first', true);
+  }
+
+  // Browse
+  function fillSelect(sel, values, chosen, first, keepCase) {
+    var label = keepCase ? String : cap;
+    clear(sel).appendChild(el('option', { value: '', text: first || 'Any' }));
+    if (chosen && values.indexOf(chosen) < 0) values = values.concat([chosen]);
+    values.forEach(function (v) { sel.appendChild(el('option', { value: v, text: label(v) })); });
+    sel.value = chosen || '';
+  }
+  function renderBrowse() {
+    var tags = used('tags');
+    state.tags.forEach(function (t) { if (tags.indexOf(t.tag) < 0) tags.push(t.tag); });
+    fillSelect($('f-type'), FMT.TYPES, filters.type);
+    fillSelect($('f-tag'), tags.sort(), filters.tag, '', true);
+    fillSelect($('f-theme'), used('themes'), filters.theme, '', true);
+    fillSelect($('f-status'), FMT.STATUSES, filters.status);
+    fillSelect($('f-sens'), FMT.SENSITIVITIES, filters.sensitivity);
+    $('q').value = filters.q;
+    $('f-retired').checked = filters.retired;
+    $('print-restricted').checked = false;
+    $('source-chip').hidden = !filters.source;
+    $('source-name').textContent = filters.source;
+    renderResults();
+  }
+  function newestFirst(a, b) {
+    if (a.added_on !== b.added_on) return a.added_on < b.added_on ? 1 : -1;
+    return num(b.id) - num(a.id);
+  }
+  function matches() {
+    var words = filters.q.toLowerCase().split(/\s+/).filter(Boolean);
+    var retired = filters.retired || filters.status === 'retired';
+    return state.entries.filter(function (e) {
+      if (e.status === 'retired' && !retired) return false;
+      if (filters.type && e.type !== filters.type) return false;
+      if (filters.tag && e.tags.indexOf(filters.tag) < 0) return false;
+      if (filters.theme && e.themes.indexOf(filters.theme) < 0) return false;
+      if (filters.status && e.status !== filters.status) return false;
+      if (filters.sensitivity && e.sensitivity !== filters.sensitivity) return false;
+      if (filters.source && e.source !== filters.source) return false;
+      if (!words.length) return true;
+      var text = (e.title + '\n' + e.content + '\n' + e.source + '\n' + e.why_it_matters).toLowerCase();
+      return words.every(function (w) { return text.indexOf(w) >= 0; });
+    }).sort(newestFirst);
+  }
+  function resultItem(e) {
+    var b = el('button', { type: 'button', class: 'result', 'data-id': e.id }, [
+      el('span', { class: 'r-id', text: e.id }),
+      el('span', { class: 'r-title', text: e.title }),
+      el('span', { class: 'r-meta', text: cap(e.type) + ' · ' + e.tags.join(', ') })
+    ]);
+    if (e.sensitivity === 'restricted' || e.status === 'retired') {
+      b.appendChild(el('span', null, [
+        e.sensitivity === 'restricted' ? el('span', { class: 'badge restricted', text: 'Restricted' }) : null,
+        e.status === 'retired' ? el('span', { class: 'badge', text: 'Retired' }) : null
+      ]));
+    }
+    return el('li', null, [b]);
+  }
+  function renderResults() {
+    var list = matches();
+    var frag = document.createDocumentFragment();
+    list.forEach(function (e) { frag.appendChild(resultItem(e)); });
+    clear($('results')).appendChild(frag);
+    $('count').textContent = plural(list.length, 'entry', 'entries');
+    printCount(list);
+    say('browse-empty', list.length ? '' : state.entries.length
+      ? 'Nothing matches. Try fewer words, set a filter back to Any, or tick Show retired entries.'
+      : 'Nothing here yet. Choose Add to write your first entry.');
+  }
+
+  // Entry
+  function openEntry(id) {
+    current = id;
+    show('entry', true);
+  }
+  function linkItem(id) {
+    var e = find(id);
+    if (!e) return el('li', { text: id + ' (not in this book)' });
+    return el('li', null, [el('button', { type: 'button', 'data-id': id, text: id + ' · ' + e.title })]);
+  }
+  function renderEntry() {
+    var e = find(current);
+    $('entry-id').textContent = e.id;
+    $('entry-restricted').hidden = e.sensitivity !== 'restricted';
+    $('entry-retired').hidden = e.status !== 'retired';
+    $('entry-title').textContent = e.title;
+    var body = clear($('entry-content'));
+    body.appendChild(el(e.type === 'quote' ? 'blockquote' : 'p', { class: 'content', text: e.content }));
+    $('entry-why').textContent = e.why_it_matters;
+    fillFields(clear($('entry-fields')), e, false);
+    var out = clear($('entry-links'));
+    e.links.forEach(function (id) { out.appendChild(linkItem(id)); });
+    if (!e.links.length) out.appendChild(el('li', { class: 'hint', text: 'No links yet.' }));
+    var back = clear($('linked-from'));
+    var from = state.entries.filter(function (x) { return x.links.indexOf(e.id) >= 0; });
+    from.forEach(function (x) { back.appendChild(linkItem(x.id)); });
+    if (!from.length) back.appendChild(el('li', { class: 'hint', text: 'No other entry links here.' }));
+    $('retire-entry').hidden = e.status === 'retired';
+  }
+  // The entry's other fields as a definition list; the printed list adds its links.
+  function fillFields(dl, e, links) {
+    [['Type', cap(e.type)], ['Source', e.source], ['Tags', e.tags.join(', ')], ['Themes', e.themes.join(', ')],
+      ['Links', links ? e.links.join(', ') : ''], ['Added', e.added_on + ' by ' + e.added_by], ['Status', cap(e.status)],
+      ['Promoted to', e.promoted_to], ['Sensitivity', cap(e.sensitivity)], ['Last reviewed', e.last_reviewed]].forEach(function (f) {
+      if (f[1]) { dl.appendChild(el('dt', { text: f[0] })); dl.appendChild(el('dd', { text: f[1] })); }
+    });
+    return dl;
+  }
+  function retireEntry() {
+    var e = pick(find(current));
+    e.status = 'retired';
+    var problems = checkEntry(e);
+    if (problems.length) { $('flash').textContent = problems.join(' '); return; }
+    putEntry(e, find(current));
+    pendingFlash = 'Retired. It stays in the book, and Browse shows it when you tick Show retired entries.';
+    show('entry', true);
+  }
+  function askDelete() {
+    var id = current;
+    var text = 'Delete ' + id + ' for good? Retiring keeps it in the book. Deleting can’t be undone, and ' + id + ' won’t be reused.';
+    var dialog = $('delete-dialog');
+    if (typeof dialog.showModal !== 'function') {
+      if (window.confirm(text)) deleteEntry(id);
+      return;
+    }
+    $('delete-text').textContent = text;
+    dialog.showModal();
+    $('delete-no').focus();
+  }
+  function deleteEntry(id) {
+    state.entries = state.entries.filter(function (e) { return e.id !== id; });
+    state.entries.forEach(function (e) {
+      var at = e.links.indexOf(id);
+      if (at >= 0) e.links.splice(at, 1);
+    });
+    save();
+    pendingFlash = 'Deleted ' + id + '. Its number won’t be used again.';
+    show('browse', true);
+  }
+
+  // Add and edit. The library writes the entry and checks it; the app only tidies what was typed.
+  function newDraft(e) {
+    draft = { editing: e ? e.id : null, tags: e ? e.tags.slice() : [], themes: e ? e.themes.slice() : [],
+      links: e ? e.links.slice() : [] };
+    $('a-title').value = e ? e.title : '';
+    $('a-type').value = e ? e.type : '';
+    $('a-content').value = e ? e.content : '';
+    $('a-source').value = e ? e.source : '';
+    $('a-why').value = e ? e.why_it_matters : '';
+    $('a-by').value = e ? e.added_by : state.last_added_by;
+    $('a-status').value = e ? e.status : 'new';
+    $('a-sens').value = e ? e.sensitivity : 'internal';
+    $('a-promoted').value = e ? e.promoted_to : '';
+    $('a-reviewed').value = e ? e.last_reviewed : '';
+    ['a-tag', 'a-theme', 'a-link', 'tag-meaning'].forEach(function (id) { $(id).value = ''; });
+    $('tag-prompt').hidden = true;
+    $('more-fields').open = !!(e && (e.promoted_to || e.last_reviewed));
+    clearErrors();
+  }
+  function renderAdd() {
+    if (!draft) newDraft(null);
+    var e = draft.editing && find(draft.editing);
+    $('add-title').textContent = e ? 'Edit ' + e.id : 'Add an entry';
+    $('a-id').value = e ? e.id : nextId();
+    $('a-on').value = e ? e.added_on : today();
+    $('cancel-edit').hidden = !e;
+    $('hint-by').textContent = state.settings['Added-by style'] === 'first-name'
+      ? 'Your first name. It’s kept with the entry.'
+      : 'Your role, like Project manager, rather than your name.';
+    fillList($('dl-tags'), state.tags.map(function (t) { return t.tag; }));
+    fillList($('dl-themes'), used('themes'));
+    fillList($('dl-links'), state.entries.filter(function (x) { return x.id !== draft.editing; })
+      .map(function (x) { return x.id + ' · ' + x.title; }));
+    ['tags', 'themes', 'links'].forEach(renderChips);
+  }
+  function fillList(list, values) {
+    var frag = document.createDocumentFragment();
+    values.forEach(function (v) { frag.appendChild(el('option', { value: v })); });
+    clear(list).appendChild(frag);
+  }
+  function renderChips(kind) {
+    var box = clear($('chips-' + kind));
+    draft[kind].forEach(function (v) {
+      var e = kind === 'links' && find(v);
+      box.appendChild(el('li', { class: 'chip' }, [
+        el('span', { text: e ? v + ' · ' + e.title : v }),
+        el('button', { type: 'button', 'data-kind': kind, 'data-value': v, 'aria-label': 'Remove ' + v, text: '×' })
+      ]));
+    });
+  }
+  function commitChip(kind) {
+    var input = $(LIST_INPUT[kind]);
+    var raw = input.value.trim();
+    say('err-' + kind, '');
+    if (!raw) return;
+    if (kind === 'links') {
+      var m = /^([A-Za-z]{2,5}-\d{4})\b/.exec(raw);
+      var id = m && m[1].toUpperCase();
+      if (!id || !find(id)) {
+        return say('err-links', state.entries.length ? 'Pick an entry from the list. It starts with its ID, like ' +
+          state.entries[0].id + '.' : 'There are no entries to link to yet.');
+      }
+      if (id === draft.editing) return say('err-links', 'An entry can’t link to itself.');
+      if (draft.links.indexOf(id) < 0) draft.links.push(id);
+      input.value = '';
+      return renderChips('links');
+    }
+    var v = raw.toLowerCase().replace(/^#/, '').replace(/\s+/g, '-');
+    if (!FMT.TAG_SHAPE.test(v)) {
+      return say('err-' + kind, 'Use lower-case letters and numbers, joined by single hyphens, like client-onboarding.');
+    }
+    if (draft[kind].indexOf(v) >= 0) { input.value = ''; return; }
+    if (kind === 'tags') {
+      if (draft.tags.length >= FMT.MAX_TAGS) return say('err-tags', 'An entry takes ' + FMT.MAX_TAGS + ' tags at most.');
+      if (!listed(v)) return askTag(v);
+    }
+    draft[kind].push(v);
+    input.value = '';
+    renderChips(kind);
+  }
+  function askTag(tag) {
+    pendingTag = tag;
+    $('tag-prompt-name').textContent = tag;
+    $('tag-meaning').value = '';
+    say('err-meaning', '');
+    $('tag-prompt').hidden = false;
+    $('tag-meaning').focus();
+  }
+  function answerTag(yes) {
+    if (yes) {
+      var meaning = $('tag-meaning').value.trim();
+      if (!meaning) return say('err-meaning', 'Add a short meaning so everyone uses the tag the same way.');
+      if (state.tags.length >= FMT.MAX_SETTINGS_TAGS) {
+        return say('err-meaning', 'The tag list is full at ' + FMT.MAX_SETTINGS_TAGS + ' tags. Remove one in Settings first.');
+      }
+      state.tags.push({ tag: pendingTag, meaning: meaning });
+      draft.tags.push(pendingTag);
+      save();
+      fillList($('dl-tags'), state.tags.map(function (t) { return t.tag; }));
+      renderChips('tags');
+    } else {
+      say('err-tags', '“' + pendingTag + '” wasn’t added. Pick a tag from your list instead.');
+    }
+    $('a-tag').value = '';
+    $('tag-prompt').hidden = true;
+    pendingTag = '';
+    $('a-tag').focus();
+  }
+  function clearErrors() {
+    ['title', 'type', 'content', 'source', 'why', 'tags', 'themes', 'links', 'by'].forEach(function (k) {
+      say('err-' + k, '');
+    });
+    Array.prototype.forEach.call($('add-form').querySelectorAll('[aria-invalid]'), function (n) {
+      n.removeAttribute('aria-invalid');
+    });
+    $('form-error').textContent = '';
+  }
+  function tidy(text) {
+    return text.replace(/\r\n?/g, '\n').replace(/[ \t]+$/gm, '').replace(/\n{3,}/g, '\n\n').trim();
+  }
+  function readForm() {
+    var e = draft.editing && find(draft.editing);
+    function one(id) { return $(id).value.trim(); }
+    return { id: e ? e.id : nextId(), title: one('a-title'), type: $('a-type').value, content: tidy($('a-content').value),
+      source: one('a-source'), why_it_matters: one('a-why'), tags: draft.tags.slice(), themes: draft.themes.slice(),
+      links: draft.links.slice(), added_by: one('a-by'), added_on: e ? e.added_on : today(), status: $('a-status').value,
+      promoted_to: one('a-promoted'), sensitivity: $('a-sens').value, last_reviewed: one('a-reviewed') };
+  }
+  // The save rule: the library writes the entry, checks it alone, and must read it back field for field.
+  function checkEntry(e) {
+    var text = F.serializeEntries([e]);
+    var problems = F.checkBook({ 'entries.md': text }, { single: true }).problems
+      .filter(function (p) { return p.level === 'error'; }).map(function (p) { return cap(p.message) + '.'; });
+    if (problems.length) return problems;
+    var back = F.parseEntries(text).entries[0];
+    var differ = KEYS.filter(function (k) { return JSON.stringify(back[k]) !== JSON.stringify(e[k]); });
+    return differ.length ? ['It wouldn’t read back the same way (' + differ.join(', ') + '). Check for lines that start with ### or with “Why it matters”.'] : [];
+  }
+  function putEntry(e, old) {
+    if (old) state.entries[state.entries.indexOf(old)] = e;
+    else state.entries.push(e);
+    var before = old ? old.links : [];
+    state.entries.forEach(function (x) {
+      var want = e.links.indexOf(x.id) >= 0;
+      var at = x.links.indexOf(e.id);
+      if (want && at < 0) x.links.push(e.id);
+      else if (!want && at >= 0 && before.indexOf(x.id) >= 0) x.links.splice(at, 1);
+    });
+    state.highest = Math.max(state.highest, num(e.id));
+    save();
+  }
+  function saveEntry(ev) {
+    ev.preventDefault();
+    clearErrors();
+    ['tags', 'themes', 'links'].forEach(function (k) { if ($(LIST_INPUT[k]).value.trim()) commitChip(k); });
+    if (!$('tag-prompt').hidden) {
+      $('form-error').textContent = 'Answer “Add to tag list?” first.';
+      return $('tag-meaning').focus();
+    }
+    var stuck = Object.keys(LIST_INPUT).filter(function (k) { return $(LIST_INPUT[k]).value.trim(); })[0];
+    if (stuck) {
+      $('form-error').textContent = 'Nothing saved yet: fix or clear the text left in ' + cap(stuck) + '.';
+      return $(LIST_INPUT[stuck]).focus();
+    }
+    var e = readForm();
+    var missing = [];
+    function need(key, input, ok, text) {
+      if (ok) return;
+      missing.push(input);
+      say('err-' + key, text);
+      $(input).setAttribute('aria-invalid', 'true');
+    }
+    need('title', 'a-title', e.title, 'Give the entry a short title.');
+    need('type', 'a-type', e.type, 'Choose a type.');
+    need('content', 'a-content', e.content, 'Write down what you want the team to keep.');
+    need('source', 'a-source', e.source, 'Say where it came from.');
+    need('why', 'a-why', e.why_it_matters, 'Add a line on why it matters. An entry can’t be saved without one.');
+    need('tags', 'a-tag', e.tags.length, 'Add at least one tag from your list.');
+    need('by', 'a-by', e.added_by, 'Say who is adding it.');
+    if (missing.length) {
+      $('form-error').textContent = 'Nothing saved yet: ' + plural(missing.length, 'field needs', 'fields need') + ' a look.';
+      return $(missing[0]).focus();
+    }
+    var problems = checkEntry(e);
+    if (problems.length) {
+      $('form-error').textContent = 'Nothing saved yet. ' + problems.join(' ');
+      return $('form-error').focus();
+    }
+    if (!draft.editing) {
+      state.last_added_by = e.added_by;
+      state.since_export += 1;
+    }
+    putEntry(e, draft.editing && find(draft.editing));
+    pendingFlash = (draft.editing ? 'Saved your changes to ' : 'Saved ') + e.id + '.';
+    draft = null;
+    openEntry(e.id);
+  }
+
+  // Indexes
+  function renderIndexes() {
+    var ix = FMT.INDEXES[indexTab];
+    for (var i = 0; i < 3; i++) {
+      $('tab-' + i).setAttribute('aria-selected', String(i === indexTab));
+      $('tab-' + i).tabIndex = i === indexTab ? 0 : -1;
+    }
+    $('index-panel').setAttribute('aria-labelledby', 'tab-' + indexTab);
+    var lines = F.buildIndexes(state.entries)[ix.file].match(/^- .*$/gm) || [];
+    var list = clear($('index-list'));
+    lines.forEach(function (line) {
+      var at = line.lastIndexOf(': ');
+      var key = line.slice(2, at);
+      var ids = line.slice(at + 2).split(FMT.LIST_SEPARATOR);
+      list.appendChild(el('li', null, [
+        el('button', { type: 'button', 'data-key': key, text: key }),
+        el('span', { class: 'hint', text: plural(ids.length, 'entry', 'entries') + ': ' + ids.join(', ') })
+      ]));
+    });
+    if (!lines.length) list.appendChild(el('li', { class: 'hint', text: 'Nothing here yet.' }));
+  }
+  function pickTab(i, focus) {
+    indexTab = (i + 3) % 3;
+    renderIndexes();
+    if (focus) $('tab-' + indexTab).focus();
+  }
+
+  // Settings
+  function renderSettings() {
+    $('s-team').value = state.settings['Team name'] || '';
+    $('s-prefix').value = state.settings['ID prefix'] || '';
+    $('s-style').value = state.settings['Added-by style'] === 'first-name' ? 'first-name' : 'role';
+    $('settings-saved').textContent = '';
+    $('s-threshold').textContent = (state.settings['Promote threshold'] || DEFAULTS['Promote threshold']) +
+      '. This is how many kept entries on one tag make it worth turning into a proper doc.';
+    renderTagList();
+  }
+  function renderTagList() {
+    var list = clear($('tag-list'));
+    state.tags.forEach(function (t, i) {
+      list.appendChild(el('li', null, [
+        el('span', { class: 'tag-name', text: t.tag }),
+        el('span', { class: 'row' }, [
+          el('input', { id: 'm-' + i, value: t.meaning, 'data-tag': t.tag, 'aria-label': 'Meaning of ' + t.tag }),
+          el('button', { type: 'button', 'data-remove': t.tag, 'aria-label': 'Remove ' + t.tag, text: 'Remove' })
+        ])
+      ]));
+    });
+  }
+  function saveSettings(ev) {
+    ev.preventDefault();
+    var team = $('s-team').value.trim();
+    var prefix = $('s-prefix').value.trim().toUpperCase();
+    say('err-s-team', !team ? 'Give your team a name.' : nameCut(team) ? NAME_CUT : '');
+    say('err-s-prefix', /^[A-Z]{2,5}$/.test(prefix) ? '' : 'Use 2 to 5 letters, like CP or OPS.');
+    if (!team || nameCut(team) || !/^[A-Z]{2,5}$/.test(prefix)) return;
+    state.settings['Team name'] = team;
+    state.settings['ID prefix'] = prefix;
+    state.settings['Added-by style'] = $('s-style').value;
+    save();
+    show('settings', false);
+    $('settings-saved').textContent = 'Saved. The next ID will be ' + nextId() + '.';
+  }
+  function editMeaning(input) {
+    var t = state.tags.filter(function (x) { return x.tag === input.getAttribute('data-tag'); })[0];
+    var meaning = input.value.trim();
+    if (!meaning) {
+      input.value = t.meaning;
+      return say('err-tag-list', 'Each tag needs a meaning, so the old one is back.');
+    }
+    say('err-tag-list', '');
+    t.meaning = meaning;
+    save();
+  }
+  function addTag(ev) {
+    ev.preventDefault();
+    var tag = $('n-tag').value.trim().toLowerCase().replace(/\s+/g, '-');
+    var meaning = $('n-meaning').value.trim();
+    var problem = !FMT.TAG_SHAPE.test(tag) ? 'Use lower-case letters and numbers, joined by single hyphens.'
+      : listed(tag) ? '“' + tag + '” is already on the list.'
+      : !meaning ? 'Add a short meaning for the tag.'
+      : state.tags.length >= FMT.MAX_SETTINGS_TAGS ? 'The list is full at ' + FMT.MAX_SETTINGS_TAGS + ' tags. Remove one first.' : '';
+    say('err-new-tag', problem);
+    if (problem) return;
+    state.tags.push({ tag: tag, meaning: meaning });
+    save();
+    $('n-tag').value = '';
+    $('n-meaning').value = '';
+    renderTagList();
+    $('n-tag').focus();
+  }
+
+  // Import and export. The library writes and reads every file; the page only hands text to it and to the browser.
+  function renderFiles() {
+    var lost = state.settings['ID prefix'] + '-' + String(state.highest).padStart(4, '0');
+    say('deleted-top', state.highest > topNumber(state.entries) ? lost + ' was deleted for good, and entries.md can’t remember ' +
+      'that. If Claude adds to this file, it may give ' + lost + ' to a new entry; the backup (JSON) keeps the count.' : '');
+    $('export-status').textContent = '';
+    clear($('import-summary'));
+  }
+  function download(name, text, type) {
+    var url = URL.createObjectURL(new Blob([text], { type: type + ';charset=utf-8' }));
+    var a = el('a', { href: url, download: name });
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+  }
+  function exportFile(kind) {
+    var file;
+    if (kind === 'settings') {
+      file = ['settings.md', settingsText(state.settings, state.tags, state.week), 'text/markdown'];
+      if (!file[1]) {
+        $('export-status').textContent = 'Your settings wouldn’t read back the same way from a settings file, so settings.md wasn’t made. Check the team name in Settings.';
+        return;
+      }
+    } else {
+      state.since_export = 0;
+      state.remind_after = REMIND;
+      save();
+      file = kind === 'entries' ? ['entries.md', F.serializeEntries({ note: state.note || '', entries: state.entries }), 'text/markdown']
+        : kind === 'csv' ? ['commonplace-' + today() + '.csv', F.toCsv(state.entries), 'text/csv']
+          : ['commonplace-backup-' + today() + '.json', JSON.stringify(state, null, 2) + '\n', 'application/json'];
+    }
+    download(file[0], file[1], file[2]);
+    $('export-status').textContent = 'Downloaded ' + file[0] + '.';
+    backupBanner();
+  }
+  function backupBanner() {
+    var on = !!state && state.since_export >= state.remind_after;
+    $('backup-banner').hidden = !on;
+    if (on) {
+      $('backup-text').textContent = 'You’ve added ' + state.since_export + ' entries since your last export. ' +
+        'Download a backup so they’re safe if this browser’s data is cleared.';
+    }
+  }
+  function report(lines) {
+    var box = clear($('import-summary'));
+    lines.forEach(function (line) { box.appendChild(el('p', { text: line })); });
+  }
+  function importFile(ev) {
+    ev.preventDefault();
+    var file = $('import-file').files[0];
+    if (!file) return report(['Choose a file to import first.']);
+    report([]);
+    file.text().then(function (text) { readImport(file.name, text); },
+      function () { report(['That file couldn’t be read, so nothing changed.']); });
+  }
+  // Reads a file into { name, entries, problems } (plus note or backup) without touching the book.
+  function readImport(name, text) {
+    var got = { name: name, entries: [], problems: [] };
+    if (/\.json$/i.test(name)) fromBackup(got, text);
+    else if (/\.csv$/i.test(name)) fromCsv(got, text);
+    else {
+      text = text.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+      if (text.trim().split('\n')[0].trim() === FMT.SETTINGS_HEADING) fromSettings(got, text);
+      else fromMarkdown(got, text);
+    }
+    if (got.problems.length) {
+      var more = got.problems.length - 5;
+      return report(['Nothing was imported.'].concat(got.problems.slice(0, 5), more > 0 ? ['and ' + more + ' more'] : []));
+    }
+    if (got.settings) return askReplace(got);
+    if (!got.entries.length) return report(['No entries found in ' + name + ', so nothing changed.']);
+    if ($('import-replace').checked) askReplace(got);
+    else mergeBook(got);
+  }
+  // Keeps the first problem of each entry, so one slip shows as one line. list holds [entry key, text] pairs.
+  function firstOfEach(list) {
+    var seen = {};
+    return list.filter(function (p) { var dup = seen[p[0]]; seen[p[0]] = true; return !dup; }).map(function (p) { return p[1]; });
+  }
+  function fromMarkdown(got, text) {
+    var files = {};
+    files[got.name] = text;
+    var res = F.checkBook(files, { single: true });
+    got.problems = firstOfEach(res.problems.filter(function (p) { return p.level === 'error'; }).map(function (p) {
+      var entry = res.entries.filter(function (e) { return e.line <= p.line; }).length;
+      return [entry, 'Line ' + p.line + (p.id ? ' (' + p.id + ')' : '') + ': ' + cap(p.message) + '.'];
+    }));
+    got.entries = res.entries.map(pick);
+    got.note = F.parseEntries(text, got.name).note;
+  }
+  // A settings file: its error-level problems, or its settings, tags and Week section for the replace dialog.
+  function fromSettings(got, text) {
+    var st = F.parseSettings(text, got.name);
+    got.problems = st.problems.filter(function (p) { return p.level === 'error'; }).map(function (p) {
+      return 'Line ' + p.line + ': ' + cap(p.message) + '.';
+    });
+    got.settings = { settings: st.settings, tags: tagPairs(st.tags), week: st.week };
+  }
+  function fromCsv(got, text) {
+    var res = F.parseCsv(text, got.name);
+    got.problems = res.problems.map(function (p) { return 'Line ' + p.line + ': ' + cap(p.message) + '.'; });
+    fromRows(got, res.entries, function (raw, i, e) { return 'Line ' + raw.line + (e.id ? ' (' + e.id + ')' : ''); });
+  }
+  function fromBackup(got, text) {
+    var s = null;
+    try { s = JSON.parse(text.replace(/^\uFEFF/, '')); } catch (err) { /* not JSON */ }
+    var ok = s && s.version === 1 && s.settings && typeof s.settings === 'object' && Array.isArray(s.tags) &&
+      Array.isArray(s.entries) && s.tags.every(function (t) { return t && typeof t.tag === 'string' && typeof t.meaning === 'string'; }) &&
+      (s.week === undefined || s.week === null || (Array.isArray(s.week) && s.week.every(function (w) { return typeof w === 'string'; }))) &&
+      settingsText(s.settings, s.tags, s.week) && (s.note === undefined || (typeof s.note === 'string' && F.parseEntries(s.note).note === s.note));
+    if (!ok) return got.problems.push('This isn’t a backup this app can read.');
+    got.backup = s;
+    fromRows(got, s.entries, function (raw, i, e) { return e.id || 'Entry ' + (i + 1); });
+  }
+  // Backup and CSV entries keep the 15 fields only; each must pass the save rule, and no ID may come twice.
+  function fromRows(got, rows, where) {
+    var seen = {};
+    rows.forEach(function (raw, i) {
+      var e = {};
+      KEYS.forEach(function (k) {
+        var v = raw ? raw[k] : '';
+        e[k] = /^(tags|themes|links)$/.test(k) ? (Array.isArray(v) ? v.map(String) : []) : typeof v === 'string' ? v : '';
+      });
+      var problems = checkEntry(e);
+      if (!problems.length && seen[e.id]) problems = ['The ID ' + e.id + ' is in this file twice.'];
+      seen[e.id] = true;
+      if (problems.length) got.problems.push(where(raw, i, e) + ': ' + problems[0]);
+      got.entries.push(e);
+    });
+  }
+  var FULL = 'This browser doesn’t have room for that import, so your book hasn’t changed.';
+  function mergeBook(got) {
+    var prefix = state.settings['ID prefix'], top = Math.max(state.highest, topNumber(got.entries));
+    var renamed = {}, pairs = [], kept = 0, fresh = [], problems = [];
+    got.entries.forEach(function (e) {
+      var old = find(e.id);
+      if (old && KEYS.every(function (k) { return JSON.stringify(old[k]) === JSON.stringify(e[k]); })) return kept++;
+      if (old) {
+        renamed[e.id] = prefix + '-' + String(++top).padStart(4, '0');
+        pairs.push(e.id + ' → ' + renamed[e.id]);
+      }
+      fresh.push(e);
+    });
+    if (!fresh.length) {
+      return report(['All ' + plural(kept, 'entry', 'entries') + ' in ' + got.name + (kept === 1 ? ' is' : ' are') +
+        ' already in this book, so nothing changed.']);
+    }
+    fresh = fresh.map(function (e) {
+      var x = pick(e);
+      x.id = renamed[e.id] || e.id;
+      x.links = e.links.map(function (id) { return renamed[id] || id; });
+      return x;
+    }).sort(function (a, b) { return num(a.id) - num(b.id); });
+    fresh.forEach(function (e) { checkEntry(e).slice(0, 1).forEach(function (p) { problems.push(e.id + ': ' + p); }); });
+    if (problems.length) return report(['Nothing was imported.'].concat(problems.slice(0, 5)));
+    if (!commit(Object.assign({}, state, { entries: state.entries.concat(fresh), highest: Math.max(state.highest, topNumber(fresh)) }))) {
+      return report([FULL]);
+    }
+    afterImport(['Added ' + plural(fresh.length, 'entry', 'entries') + ' from ' + got.name + '.']
+      .concat(pairs.length ? [plural(pairs.length, 'entry', 'entries') + ' renumbered: ' + pairs.join(', ') + '.'] : [],
+        kept ? [plural(kept, 'entry was', 'entries were') + ' already in this book.'] : []), got.entries);
+  }
+  function askReplace(got) {
+    pendingImport = got;
+    var text = got.settings ? 'Use the settings in ' + got.name + '? Your team name, ID prefix, tag list and other settings ' +
+      'change to the file’s. Your entries stay as they are.'
+      : 'Replace the ' + plural(state.entries.length, 'entry', 'entries') + ' in this book with the ' + got.entries.length +
+      ' from ' + got.name + '? Download a backup first if you might want them back.';
+    var dialog = $('replace-dialog');
+    if (typeof dialog.showModal !== 'function') {
+      if (window.confirm(text)) replaceBook();
+      return;
+    }
+    $('replace-text').textContent = text;
+    dialog.showModal();
+    $('replace-no').focus();
+  }
+  function replaceBook() {
+    var got = pendingImport, b = got.backup;
+    pendingImport = null;
+    if (got.settings) {
+      if (!commit(Object.assign({}, state, got.settings))) return report([FULL]);
+      return afterImport(['This book now uses the settings in ' + got.name + '.'], state.entries);
+    }
+    var next = Object.assign({}, state, { entries: got.entries, since_export: 0, remind_after: REMIND });
+    if (b) {
+      var same = b.settings['ID prefix'] === state.settings['ID prefix'];
+      Object.assign(next, { settings: b.settings, tags: tagPairs(b.tags), week: Array.isArray(b.week) ? b.week : null,
+        sample: b.sample === true, note: b.note || '',
+        last_added_by: typeof b.last_added_by === 'string' ? b.last_added_by : '',
+        highest: Math.max(+b.highest || 0, topNumber(got.entries), same ? state.highest : 0) });
+    } else {
+      next.highest = Math.max(state.highest, topNumber(got.entries));
+      if (got.note !== undefined) next.note = got.note;
+    }
+    if (!commit(next)) return report([FULL]);
+    afterImport(['This book now holds the ' + plural(got.entries.length, 'entry', 'entries') + ' from ' + got.name + '.'], got.entries);
+  }
+  function afterImport(lines, entries) {
+    var prefix = state.settings['ID prefix'];
+    var other = entries.map(function (e) { return e.id.split('-')[0]; }).filter(function (p) { return p !== prefix; })[0];
+    if (other) lines.push('These entries use ' + other + ', and new entries here use ' + prefix + '. You can change the ID prefix in Settings.');
+    draft = null;
+    filters = blankFilters();
+    show('files', false);
+    report(lines);
+  }
+
+  // Print: the entries Browse shows now, in Browse order, restricted ones only when ticked.
+  function printable(list) {
+    var all = $('print-restricted').checked;
+    return list.filter(function (e) { return all || e.sensitivity !== 'restricted'; });
+  }
+  function printCount(list) {
+    $('print-count').textContent = plural(printable(list).length, 'entry', 'entries') +
+      ' will print. Cards show as much of each entry as fits; the list prints everything.';
+  }
+  function printCard(e) {
+    return el('article', { class: 'print-card', 'data-id': e.id }, [
+      el('h2', { text: e.id + ' · ' + e.title }),
+      el('p', { class: 'pc-small', text: cap(e.type) + ' · ' + e.tags.join(', ') }),
+      e.sensitivity === 'restricted' ? el('p', null, [el('span', { class: 'badge', text: 'Restricted' })]) : null,
+      el('p', { class: 'pc-content', text: e.content }),
+      el('p', null, [el('strong', { text: 'Why it matters: ' }), e.why_it_matters]),
+      el('p', { class: 'pc-small', text: e.source })
+    ]);
+  }
+  function printNow() {
+    var list = printable(matches()), area = clear($('print-area'));
+    if (!list.length) return;
+    if ($('print-cards').checked) {
+      for (var i = 0; i < list.length; i += 4) area.appendChild(el('div', { class: 'sheet' }, list.slice(i, i + 4).map(printCard)));
+    } else {
+      list.forEach(function (e) {
+        area.appendChild(el('article', { class: 'print-item', 'data-id': e.id }, [
+          el('h2', { text: e.id + ' · ' + e.title }),
+          el('p', { class: 'pc-content', text: e.content }),
+          el('p', null, [el('strong', { text: 'Why it matters: ' }), e.why_it_matters]),
+          fillFields(el('dl', { class: 'fields' }), e, true)
+        ]));
+      });
+    }
+    document.body.classList.add('printing');
+    window.print();
+  }
+
+  // Wiring
+  function wire() {
+    fillSelect($('a-type'), FMT.TYPES, '', 'Choose a type');
+    FMT.STATUSES.forEach(function (s) { $('a-status').appendChild(el('option', { value: s, text: cap(s) })); });
+    FMT.SENSITIVITIES.forEach(function (s) { $('a-sens').appendChild(el('option', { value: s, text: cap(s) })); });
+    $('nav').addEventListener('click', function (ev) {
+      var b = ev.target.closest('button[data-view]');
+      if (!b) return;
+      if (b.getAttribute('data-view') === 'add' && draft && draft.editing) draft = null;
+      show(b.getAttribute('data-view'), true);
+    });
+    $('start-own').addEventListener('click', startOwn);
+    $('start-form').addEventListener('submit', createBook);
+    $('explore-sample').addEventListener('click', exploreSample);
+    $('remove-sample').addEventListener('click', removeSample);
+    $('q').addEventListener('input', function () { filters.q = $('q').value; renderResults(); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-filter]'), function (sel) {
+      sel.addEventListener('change', function () { filters[sel.getAttribute('data-filter')] = sel.value; renderResults(); });
+    });
+    $('f-retired').addEventListener('change', function () { filters.retired = $('f-retired').checked; renderResults(); });
+    $('clear-source').addEventListener('click', function () { filters.source = ''; renderBrowse(); $('q').focus(); });
+    ['results', 'entry-links', 'linked-from'].forEach(function (id) {
+      $(id).addEventListener('click', function (ev) {
+        var b = ev.target.closest('[data-id]');
+        if (b) openEntry(b.getAttribute('data-id'));
+      });
+    });
+    $('edit-entry').addEventListener('click', function () { newDraft(find(current)); show('add', true); });
+    $('retire-entry').addEventListener('click', retireEntry);
+    $('delete-entry').addEventListener('click', askDelete);
+    $('delete-no').addEventListener('click', function () { $('delete-dialog').close(); });
+    $('delete-yes').addEventListener('click', function () { $('delete-dialog').close(); deleteEntry(current); });
+    $('delete-dialog').addEventListener('close', function () { if (view === 'entry') $('delete-entry').focus(); });
+    $('add-form').addEventListener('submit', saveEntry);
+    $('cancel-edit').addEventListener('click', function () { var id = draft.editing; draft = null; openEntry(id); });
+    Object.keys(LIST_INPUT).forEach(function (kind) {
+      var input = $(LIST_INPUT[kind]);
+      input.addEventListener('keydown', function (ev) {
+        if (ev.key === ',' || (ev.key === 'Enter' && input.value.trim())) { ev.preventDefault(); commitChip(kind); }
+      });
+      input.addEventListener('change', function () { if ($('tag-prompt').hidden) commitChip(kind); });
+      $('chips-' + kind).addEventListener('click', function (ev) {
+        var b = ev.target.closest('button[data-value]');
+        if (!b) return;
+        draft[kind].splice(draft[kind].indexOf(b.getAttribute('data-value')), 1);
+        renderChips(kind);
+        input.focus();
+      });
+    });
+    $('tag-yes').addEventListener('click', function () { answerTag(true); });
+    $('tag-no').addEventListener('click', function () { answerTag(false); });
+    $('tag-meaning').addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); answerTag(true); }
+    });
+    for (var i = 0; i < 3; i++) $('tab-' + i).addEventListener('click', pickTab.bind(null, i, false));
+    document.querySelector('[role="tablist"]').addEventListener('keydown', function (ev) {
+      if (ev.key === 'ArrowRight') pickTab(indexTab + 1, true);
+      else if (ev.key === 'ArrowLeft') pickTab(indexTab - 1, true);
+    });
+    $('index-list').addEventListener('click', function (ev) {
+      var b = ev.target.closest('button[data-key]');
+      if (!b) return;
+      filters = blankFilters();
+      filters[FILTER_KEY[indexTab]] = b.getAttribute('data-key');
+      show('browse', true);
+    });
+    $('settings-form').addEventListener('submit', saveSettings);
+    $('new-tag-form').addEventListener('submit', addTag);
+    $('tag-list').addEventListener('change', function (ev) { if (ev.target.matches('input[data-tag]')) editMeaning(ev.target); });
+    $('tag-list').addEventListener('click', function (ev) {
+      var b = ev.target.closest('button[data-remove]');
+      if (!b) return;
+      state.tags = state.tags.filter(function (t) { return t.tag !== b.getAttribute('data-remove'); });
+      save();
+      renderTagList();
+      $('n-tag').focus();
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-export]'), function (b) {
+      b.addEventListener('click', function () { exportFile(b.getAttribute('data-export')); });
+    });
+    $('backup-now').addEventListener('click', function () { exportFile('backup'); });
+    $('backup-later').addEventListener('click', function () {
+      state.remind_after = state.since_export + REMIND;
+      save();
+      backupBanner();
+    });
+    $('import-form').addEventListener('submit', importFile);
+    $('replace-no').addEventListener('click', function () { pendingImport = null; $('replace-dialog').close(); });
+    $('replace-yes').addEventListener('click', function () { $('replace-dialog').close(); replaceBook(); });
+    $('print-restricted').addEventListener('change', function () { printCount(matches()); });
+    $('print-now').addEventListener('click', printNow);
+    window.addEventListener('afterprint', function () { document.body.classList.remove('printing'); });
+    window.addEventListener('storage', function (ev) {
+      if (ev.key !== KEY || storage.locked) return;
+      state = load(ev.newValue);
+      if (storage.locked) storageBanner();
+      draft = null;
+      show(view === 'first' ? 'browse' : view, false);
+    });
+  }
+
+  state = load(openStorage());
+  if (!storage.ok || storage.locked) storageBanner();
+  wire();
+  show('browse', false);
+})();
+</script>
+</body>
+</html>
